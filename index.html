@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>真题 × 考纲主题 对照矩阵 · 教学增强版 v2</title>
+<link href="https://fonts.useso.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0c0d12;--surface:#14151c;--surface2:#1a1b24;--surface3:#1f2130;--border:#252630;--border2:#2f3044;
+  --text:#e8e8ef;--text2:#9d9db5;--text3:#65657d;
+  --blue:#4f7df5;--blue-dim:#4f7df533;--orange:#e5943a;--orange-dim:#e5943a33;
+  --green:#3bba7e;--green-dim:#3bba7e33;--red:#ef5350;--yellow:#fbbf24;
+  --purple:#a78bfa;--cyan:#22d3ee;--pink:#f472b6;
+}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:0}
+.page{max-width:1200px;margin:0 auto;padding:28px 20px 60px}
+
+/* Header */
+.header{margin-bottom:24px}
+.header h1{font-size:22px;font-weight:900;letter-spacing:.5px;background:linear-gradient(135deg,#fff 40%,var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header .sub{font-size:12px;color:var(--text3);margin-top:4px}
+.header .desc{font-size:13px;color:var(--text2);margin-top:8px;line-height:1.8}
+.legend{display:flex;gap:18px;margin-top:10px;flex-wrap:wrap}
+.legend span{font-size:11px;color:var(--text3);display:flex;align-items:center;gap:4px}
+.legend .ldot{width:12px;height:12px;border-radius:3px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px}
+.stat-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.stat-val{font-size:22px;font-weight:900}
+.stat-note{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* ========== TOOLBAR ========== */
+.toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.toolbar-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-right:4px}
+.tbtn{padding:6px 16px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;transition:.15s;white-space:nowrap}
+.tbtn:hover{background:var(--surface2);color:var(--text)}
+.tbtn.active{border-color:var(--blue);color:var(--blue);background:rgba(79,125,245,.1)}
+.tbtn[data-mod="职业模块"].active{border-color:var(--orange);color:var(--orange);background:rgba(229,148,58,.1)}
+.tbtn[data-mod="拓展模块"].active{border-color:var(--green);color:var(--green);background:rgba(59,186,126,.1)}
+.tbtn-sep{width:1px;height:20px;background:var(--border2);margin:0 4px}
+
+/* ========== VIEW TABS ========== */
+.view-tabs{display:flex;gap:0;margin-bottom:18px;border-bottom:2px solid var(--border)}
+.vtab{padding:10px 20px;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s;position:relative}
+.vtab:hover{color:var(--text2)}
+.vtab.active{color:var(--text);border-bottom-color:var(--blue)}
+.vtab .badge{position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;background:var(--red);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+/* Sections */
+.section{display:none}
+.section.show{display:block}
+
+/* Matrix */
+.matrix-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--border);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:860px}
+thead th{padding:10px 4px;font-size:11px;font-weight:600;color:var(--text2);border-bottom:2px solid var(--border2);text-align:center;position:sticky;top:0;background:var(--surface);z-index:3}
+th.corner{text-align:left;width:120px;padding-left:14px;border-right:2px solid var(--border2)}
+th.yr{cursor:pointer;min-width:60px;transition:.15s;user-select:none}
+th.yr:hover,th.yr.active{background:var(--surface2)}
+th.yr .y-num{font-size:13px;font-weight:800}
+th.yr .y-dot{width:6px;height:6px;border-radius:50%;margin:3px auto 0;background:var(--blue)}
+th.cnt{width:48px;border-left:2px solid var(--border2);font-size:10px}
+.mod td{padding:5px 14px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.dr{transition:.12s}
+.dr:hover{background:var(--surface2)}
+.dr td{border-bottom:1px solid #1c1d28}
+.tn{padding:5px 14px;font-size:12px;font-weight:500;white-space:nowrap;border-right:2px solid var(--border2)}
+.tn.zero{color:var(--red);font-weight:600}
+.cell{padding:2px;text-align:center;cursor:pointer}
+.cell:hover .pip.filled{transform:scale(1.25)}
+.cell.hl{background:rgba(79,125,245,.06)}
+.pip{width:36px;height:26px;margin:2px auto;border-radius:5px;transition:.15s}
+.pip.empty{border:1px solid #25263033}
+.pip.filled{cursor:pointer}
+.cnt-cell{text-align:center;font-size:15px;font-weight:900;border-left:2px solid var(--border2)}
+.dr.dim{opacity:.15;pointer-events:none}
+.mod.dim{opacity:.15}
+
+/* ========== BLIND SPOTS ========== */
+.blind{margin-top:24px;background:#1a1812;border-radius:12px;padding:20px 24px;border:1px solid #3d3520}
+.blind-hd{font-size:13px;font-weight:800;color:var(--yellow);margin-bottom:12px}
+.blind-tags{display:flex;flex-wrap:wrap;gap:8px}
+.blind-tag{padding:5px 14px;border-radius:6px;font-size:12px;font-weight:600}
+.blind-note{font-size:11px;color:#8a8060;margin-top:14px;line-height:1.9}
+
+/* ========== PRACTICE SECTION ========== */
+.practice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.pcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:.2s;cursor:pointer}
+.pcard:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.pcard-top{padding:18px 20px 14px;position:relative}
+.pcard-badge{position:absolute;top:14px;right:16px;padding:3px 10px;border-radius:5px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.pcard-theme{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.pcard-title{font-size:16px;font-weight:800;color:#fff;margin-top:6px;line-height:1.4}
+.pcard-desc{font-size:12px;color:var(--text2);margin-top:6px;line-height:1.6}
+.pcard-foot{padding:12px 20px;background:var(--surface2);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.pcard-foot span{font-size:11px;color:var(--text3)}
+.pcard-btn{padding:5px 16px;border-radius:6px;font-size:11px;font-weight:700;border:none;cursor:pointer;transition:.15s}
+.pcard-btn:hover{filter:brightness(1.2)}
+.practice-intro{margin-bottom:20px;padding:16px 20px;background:linear-gradient(135deg,#1a1812,#1c1520);border:1px solid #3d3520;border-radius:12px}
+.practice-intro h3{font-size:15px;font-weight:800;color:var(--yellow);margin-bottom:6px}
+.practice-intro p{font-size:12px;color:#a09070;line-height:1.8}
+
+/* ========== SENTENCE BANK SECTION ========== */
+.bank-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.bfbtn{padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid var(--border2);background:var(--surface);color:var(--text3);cursor:pointer;transition:.15s}
+.bfbtn:hover{color:var(--text2);background:var(--surface2)}
+.bfbtn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(34,211,238,.08)}
+.bank-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:10px}
+.bcard{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;transition:.15s}
+.bcard:hover{border-color:var(--border2);background:var(--surface2)}
+.bcard-type{display:inline-block;font-size:9px;padding:2px 8px;border-radius:4px;color:#fff;font-weight:700;margin-bottom:6px}
+.bcard-en{font-size:13px;font-weight:600;color:var(--cyan);line-height:1.5}
+.bcard-zh{font-size:11px;color:var(--text3);margin-top:3px}
+.bcard-src{font-size:10px;color:var(--text3);margin-top:6px;opacity:.6}
+
+/* ========== MODAL ========== */
+.panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;display:none;animation:fadeO .2s}
+.panel-overlay.show{display:flex;align-items:center;justify-content:center}
+.panel{background:var(--surface);border:1px solid var(--border2);border-radius:16px;width:92%;max-width:780px;max-height:88vh;overflow-y:auto;padding:0;animation:slideU .25s ease;position:relative}
+.panel::-webkit-scrollbar{width:6px}
+.panel::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+.panel-close{position:absolute;top:14px;right:16px;width:32px;height:32px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;transition:.15s}
+.panel-close:hover{background:var(--border2);color:#fff}
+.panel-head{padding:24px 28px 18px;border-bottom:1px solid var(--border)}
+.panel-year{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:2px;text-transform:uppercase}
+.panel-title{font-size:20px;font-weight:900;margin-top:4px;color:#fff}
+.panel-prompt{font-size:13px;color:var(--text2);margin-top:8px;line-height:1.7;background:var(--surface2);padding:12px 16px;border-radius:8px;border-left:3px solid var(--blue)}
+.panel-themes{padding:16px 28px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.panel-themes .label{font-size:10px;color:var(--text3);margin-right:4px;text-transform:uppercase;letter-spacing:1px}
+.tag{padding:4px 12px;border-radius:6px;font-size:11px;font-weight:600}
+.panel-essay{padding:24px 28px}
+.sec-label{font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.essay-body{font-size:14px;line-height:2.1;color:var(--text);letter-spacing:.02em}
+.essay-body .hl{background:linear-gradient(180deg,transparent 55%,rgba(251,191,36,.22) 55%);padding:0 2px;border-radius:2px;cursor:help;position:relative}
+.essay-body .hl:hover{background:linear-gradient(180deg,transparent 45%,rgba(251,191,36,.35) 45%)}
+.essay-body .hl .tip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#1a1b24;border:1px solid var(--border2);padding:6px 12px;border-radius:8px;font-size:11px;color:var(--yellow);white-space:nowrap;z-index:10;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.essay-body .hl:hover .tip{display:block}
+.word-count{font-size:11px;color:var(--text3);margin-top:8px;text-align:right}
+.panel-patterns{padding:0 28px 24px}
+.pattern{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:8px}
+.pattern-en{font-size:13px;font-weight:600;color:var(--cyan)}
+.pattern-zh{font-size:11px;color:var(--text3);margin-top:3px}
+.pattern-type{display:inline-block;font-size:9px;padding:2px 8px;border-radius:4px;color:#fff;font-weight:700;margin-left:6px;vertical-align:middle}
+
+/* Practice modal extra */
+.panel-year.pred{color:var(--yellow)}
+.panel-prompt.pred{border-left-color:var(--yellow)}
+.panel-diff{padding:12px 28px;border-bottom:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap}
+.diff-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)}
+.diff-dot{width:8px;height:8px;border-radius:2px}
+.writing-tip{margin:0 28px 16px;padding:12px 16px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.15);border-radius:8px;font-size:12px;color:#c4a44a;line-height:1.7}
+.writing-tip strong{color:var(--yellow)}
+
+.footer{font-size:10px;color:var(--text3);text-align:center;margin-top:28px;opacity:.5}
+
+@keyframes fadeO{from{opacity:0}to{opacity:1}}
+@keyframes slideU{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:640px){
+  .page{padding:16px 10px 40px}
+  .panel{width:98%;max-height:92vh;border-radius:12px}
+  .panel-head,.panel-essay,.panel-patterns,.panel-themes,.panel-diff,.writing-tip{padding-left:16px;padding-right:16px}
+  .practice-grid{grid-template-columns:1fr}
+  .bank-list{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <h1>真题 × 考纲主题 对照矩阵 · 教学增强版</h1>
+    <div class="sub">江苏中职职教高考英语 · 2016—2025 · 10篇真题范文 + 12道盲区预测练习</div>
+    <p class="desc">基于2025版新考纲19个主题，映射近十年作文真题覆盖情况。点击<strong>色块</strong>或<strong>年份</strong>查看详情。</p>
+    <div class="legend">
+      <span><span class="ldot" style="background:var(--blue)"></span>强关联</span>
+      <span><span class="ldot" style="background:var(--blue-dim)"></span>弱关联</span>
+      <span><span class="ldot" style="background:var(--border)"></span>未覆盖</span>
+      <span style="color:var(--yellow)">⬤ 黄色底纹 = 亮点句型</span>
+    </div>
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <!-- VIEW TABS -->
+  <div class="view-tabs">
+    <div class="vtab active" data-tab="matrix">覆盖矩阵</div>
+    <div class="vtab" data-tab="practice">盲区预测练习 <span class="badge" id="pracBadge"></span></div>
+    <div class="vtab" data-tab="bank">句型库</div>
+  </div>
+
+  <!-- TAB 1: MATRIX -->
+  <div class="section show" id="sec-matrix">
+    <div class="toolbar" id="toolbar">
+      <span class="toolbar-label">模块筛选</span>
+    </div>
+    <div class="matrix-wrap"><table id="matrix"></table></div>
+    <div class="blind" id="blind"></div>
+  </div>
+
+  <!-- TAB 2: PRACTICE -->
+  <div class="section" id="sec-practice">
+    <div class="practice-intro">
+      <h3>命题盲区 → 预测练习题</h3>
+      <p>以下12道练习题覆盖十年真题从未触及的考纲主题，含<strong>7道职业模块</strong>、<strong>2道拓展模块</strong>、<strong>3道交叉主题</strong>。<br>每道题均配有范文（80–100词）和亮点句型，题目格式模拟真题提纲式命题，同时引入考纲要求的<strong>应用文体裁</strong>。<br>点击卡片查看完整内容。</p>
+    </div>
+    <div class="toolbar" id="ptoolbar">
+      <span class="toolbar-label">体裁筛选</span>
+    </div>
+    <div class="practice-grid" id="practiceGrid"></div>
+  </div>
+
+  <!-- TAB 3: SENTENCE BANK -->
+  <div class="section" id="sec-bank">
+    <div class="bank-filters" id="bankFilters"></div>
+    <div class="bank-list" id="bankList"></div>
+  </div>
+
+  <div class="footer">课堂教学资源 · 2025版江苏省中职职教高考英语考试大纲 & 2016–2025作文真题<br>范文按课标"水平二"编写，80–100词，适配中职考生实际水平</div>
+</div>
+
+<!-- MODAL -->
+<div class="panel-overlay" id="overlay">
+  <div class="panel" id="panel">
+    <button class="panel-close" id="panelClose">&times;</button>
+    <div id="panelContent"></div>
+  </div>
+</div>
+
+<script>
+// ==================== DATA ====================
+const MODULES=[
+  {name:"基础模块",color:"var(--blue)",hex:"#4f7df5",themes:[
+    {id:"B1",label:"自我与他人"},{id:"B2",label:"学习与生活"},{id:"B3",label:"社会交往"},
+    {id:"B4",label:"社会服务"},{id:"B5",label:"历史与文化"},{id:"B6",label:"科学与技术"},
+    {id:"B7",label:"自然与环境"},{id:"B8",label:"可持续发展"}
+  ]},
+  {name:"职业模块",color:"var(--orange)",hex:"#e5943a",themes:[
+    {id:"V1",label:"求职应聘"},{id:"V2",label:"职场礼仪"},{id:"V3",label:"职场服务"},
+    {id:"V4",label:"设备操作"},{id:"V5",label:"技术应用"},{id:"V6",label:"职场安全"},
+    {id:"V7",label:"危机应对"},{id:"V8",label:"职业规则"}
+  ]},
+  {name:"拓展模块",color:"var(--green)",hex:"#3bba7e",themes:[
+    {id:"E1",label:"自我发展"},{id:"E2",label:"技术创新"},{id:"E3",label:"环境保护"}
+  ]}
+];
+const YEARS=[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+const allThemes=MODULES.flatMap(m=>m.themes);
+const MATRIX={
+  2016:{B1:1,B2:2},2017:{B2:2,B6:1},2018:{B1:2,B3:2},2019:{B1:1,V1:1,E1:2},
+  2020:{B7:2,B8:2,E3:2},2021:{B2:2,B6:2},2022:{B1:2,B2:1},2023:{B3:1,B8:1,B6:1},
+  2024:{B5:2,B3:1},2025:{B7:2,B2:1}
+};
+
+const typeColors={开头:'#22d3ee',连接:'#a78bfa',观点:'#4f7df5',高级:'#ef5350',句型:'#e5943a',总结:'#3bba7e'};
+
+// ===== 10 REAL ESSAY DATA =====
+const DATA={
+  2016:{title:"My Views on Reading",prompt:"1. 读书的重要性；\n2. 你喜欢读什么书、为什么；\n3. 建议大家多读书。\n要求：80–100词。",themes:["B1","B2"],
+    essay:`Reading plays an important role in our daily life. <span class="hl">It not only broadens our horizons but also helps us become better people.<span class="tip">not only...but also... 并列递进</span></span>\n\nAs for me, I enjoy reading stories about great people. <span class="hl">By reading their experiences, I have learned that hard work is the key to success.<span class="tip">By doing..., sb. have learned that... 经验总结句</span></span> Besides, reading helps me relax after a long day of study.\n\n<span class="hl">In my opinion, everyone should develop the habit of reading.<span class="tip">In my opinion, sb. should... 观点表达</span></span> We can start with books that interest us and read a little every day. <span class="hl">I believe that reading will make a great difference in our life.<span class="tip">I believe that... will make a difference 信念总结</span></span>`,
+    patterns:[{en:"not only...but also...",zh:"不但……而且……（并列递进结构）",type:"连接"},{en:"By doing..., sb. have learned that...",zh:"通过做……，某人学到了……（经验总结）",type:"句型"},{en:"In my opinion, sb. should...",zh:"在我看来，某人应该……（观点引出）",type:"观点"},{en:"I believe that...will make a great difference",zh:"我相信……会带来巨大改变（总结升华）",type:"总结"}]
+  },
+  2017:{title:"My Views on Mobile Phones at School",prompt:"1. 学生带手机进校园很普遍；\n2. 利：方便联系、查资料；弊：分心、影响学习、攀比；\n3. 你的看法与建议。\n要求：80–100词。",themes:["B2","B6"],
+    essay:`Nowadays, <span class="hl">it is quite common for students to bring mobile phones to school.<span class="tip">It is + adj. + for sb. to do sth. 主语从句</span></span>\n\n<span class="hl">On the one hand, mobile phones make it easy to contact parents and search for information. On the other hand, they may distract students from their studies.<span class="tip">On the one hand...On the other hand... 利弊对比</span></span> Some students even use phones to play games in class, which is a waste of time.\n\n<span class="hl">As far as I am concerned, students can bring phones to school but should turn them off during class.<span class="tip">As far as I am concerned 表达个人立场</span></span> <span class="hl">Only in this way can we make good use of mobile phones without affecting our study.<span class="tip">Only in this way can we... 倒装强调句</span></span>`,
+    patterns:[{en:"It is + adj. + for sb. to do sth.",zh:"对某人来说做某事是……的（形式主语）",type:"句型"},{en:"On the one hand...On the other hand...",zh:"一方面……另一方面……（利弊对比）",type:"连接"},{en:"As far as I am concerned, ...",zh:"就我而言……（个人立场）",type:"观点"},{en:"Only in this way can we...",zh:"只有这样我们才能……（倒装强调）",type:"高级"}]
+  },
+  2018:{title:"How to Communicate with Parents",prompt:"1. 与父母沟通的重要性；\n2. 存在的问题（代沟、少交流、易争吵）；\n3. 有效沟通的方法与建议。\n要求：80–100词。",themes:["B1","B3"],
+    essay:`Communication with parents is very important in our life. <span class="hl">However, many students find it difficult to talk with their parents.<span class="tip">find it + adj. + to do sth. 发现做某事……</span></span>\n\n<span class="hl">There are several reasons for this problem.<span class="tip">There are several reasons for... 原因引出句</span></span> First, the generation gap makes us think differently. Second, some students are too busy with schoolwork to share their feelings. <span class="hl">What's worse, small disagreements may turn into big arguments.<span class="tip">What's worse, ... 递进恶化</span></span>\n\n<span class="hl">To solve this problem, I suggest that we should listen to our parents patiently and try to understand them.<span class="tip">I suggest that sb. should... 建议句型（虚拟语气）</span></span> We can also write letters or leave notes when face-to-face talk feels hard. Good communication needs effort from both sides.`,
+    patterns:[{en:"find it + adj. + to do sth.",zh:"发现做某事是……的（形式宾语）",type:"句型"},{en:"There are several reasons for...",zh:"……有几个原因（原因引出）",type:"连接"},{en:"What's worse, ...",zh:"更糟糕的是……（递进连接）",type:"连接"},{en:"I suggest that sb. should...",zh:"我建议某人应该……（虚拟语气）",type:"高级"}]
+  },
+  2019:{title:"My Dream Job",prompt:"1. 你的理想职业是什么；\n2. 为什么选择它；\n3. 你将如何实现。\n要求：80–100词。",themes:["B1","V1","E1"],
+    essay:`<span class="hl">Everyone has a dream job, and mine is to become a software engineer.<span class="tip">Everyone has..., and mine is to... 引出个人理想</span></span>\n\n<span class="hl">The reason why I choose this job is that I am very interested in computers and programming.<span class="tip">The reason why...is that... 原因阐述从句</span></span> I enjoy solving problems with technology. Besides, software engineers are in great need today, so I believe this career has a bright future.\n\n<span class="hl">In order to achieve my dream, I plan to study hard and practice my computer skills every day.<span class="tip">In order to..., I plan to... 目标+计划</span></span> After graduation, I will try to find an internship to gain experience. <span class="hl">I am sure that as long as I keep trying, my dream will come true.<span class="tip">As long as sb. keep doing, ... will... 条件+信念</span></span>`,
+    patterns:[{en:"Everyone has..., and mine is to...",zh:"每个人都有……，我的是……（引出话题）",type:"开头"},{en:"The reason why...is that...",zh:"……的原因是……（原因从句）",type:"高级"},{en:"In order to..., I plan to...",zh:"为了……，我打算……（目的+计划）",type:"连接"},{en:"As long as sb. keep doing, ...will...",zh:"只要某人坚持做……，就会……（条件句）",type:"高级"}]
+  },
+  2020:{title:"My Views on Recycling",prompt:"1. 垃圾分类与回收的现状；\n2. 回收的好处（环保、节约资源）；\n3. 中学生可以怎么做。\n要求：80–100词。",themes:["B7","B8","E3"],
+    essay:`<span class="hl">With the development of society, the problem of waste has become more and more serious.<span class="tip">With the development of..., ... has become... 背景引入</span></span> Recycling is now encouraged all over China.\n\nRecycling has many advantages. <span class="hl">For one thing, it helps protect the environment by reducing pollution. For another, it saves natural resources such as water and wood.<span class="tip">For one thing...For another... 分点论述</span></span> Recycling also helps us develop good habits.\n\n<span class="hl">As students, we should take action to support recycling.<span class="tip">As students, we should... 身份+倡议</span></span> For example, we can sort our rubbish into different bins and reuse old books. <span class="hl">If everyone does a little, our world will become a better place.<span class="tip">If everyone does..., ...will become... 倡议呼吁</span></span>`,
+    patterns:[{en:"With the development of..., ...has become...",zh:"随着……的发展，……变得……（背景引入）",type:"开头"},{en:"For one thing...For another...",zh:"一方面……另一方面……（分点列举）",type:"连接"},{en:"As students, we should take action to...",zh:"作为学生，我们应该采取行动……（身份倡议）",type:"观点"},{en:"If everyone does a little, ...will become...",zh:"如果每个人都做一点，……就会变得……（呼吁结尾）",type:"总结"}]
+  },
+  2021:{title:"Online Learning",prompt:"1. 网课越来越普遍；\n2. 网课的优缺点；\n3. 你的态度与建议。\n要求：80–100词。",themes:["B2","B6"],
+    essay:`<span class="hl">In recent years, online learning has become increasingly popular among students.<span class="tip">In recent years, ...has become increasingly popular 现象引入</span></span>\n\n<span class="hl">There is no doubt that online learning has its advantages.<span class="tip">There is no doubt that... 毋庸置疑句型</span></span> Students can study at home and watch videos again and again. It is also convenient for those who live far from school. <span class="hl">However, it also has some disadvantages, such as poor self-control and lack of face-to-face communication.<span class="tip">However, it also has...such as... 转折+举例</span></span>\n\n<span class="hl">From my point of view, online learning is a useful tool but cannot replace classroom teaching.<span class="tip">From my point of view, ... 个人观点表达</span></span> We should combine both methods and learn to manage our time wisely.`,
+    patterns:[{en:"In recent years, ...has become increasingly popular",zh:"近年来，……变得越来越流行（时代趋势开头）",type:"开头"},{en:"There is no doubt that...",zh:"毋庸置疑，……（肯定判断）",type:"高级"},{en:"However, it also has...such as...",zh:"然而，它也有……例如……（转折+举例）",type:"连接"},{en:"From my point of view, ...",zh:"在我看来，……（观点立场）",type:"观点"}]
+  },
+  2022:{title:"How to Keep Healthy",prompt:"1. 人人希望健康；\n2. 如何保持健康（饮食、运动、作息等）；\n3. 你是怎么做的。\n要求：80–100词。",themes:["B1","B2"],
+    essay:`<span class="hl">Health is the most important thing in our life, and everyone wants to stay healthy.<span class="tip">...is the most important thing in... 价值判断开头</span></span>\n\n<span class="hl">So how can we keep healthy? First of all, we should eat a balanced diet with more vegetables and less junk food.<span class="tip">How can we...? First of all, we should... 设问+回答</span></span> Second, taking exercise regularly is also necessary. We can run, swim, or play basketball for at least thirty minutes a day. <span class="hl">What's more, getting enough sleep is important for both our body and mind.<span class="tip">What's more, ...is important for... 递进补充</span></span>\n\n<span class="hl">As for me, I make it a rule to go to bed before ten and exercise every morning.<span class="tip">As for me, I make it a rule to... 个人做法表述</span></span> I believe a healthy lifestyle will benefit us all our life.`,
+    patterns:[{en:"...is the most important thing in...",zh:"……是……中最重要的事（价值判断）",type:"开头"},{en:"How can we...? First of all, we should...",zh:"我们如何……？首先，我们应该……（设问回答）",type:"句型"},{en:"What's more, ...is important for...",zh:"此外，……对……很重要（递进补充）",type:"连接"},{en:"As for me, I make it a rule to...",zh:"至于我，我把……当作规则（个人实践）",type:"观点"}]
+  },
+  2023:{title:"My Views on Buying and Selling Second-hand Items Online",prompt:"1. 网上二手交易现象（学习用品、生活用品、电子产品）；\n2. 你或亲友的相关经历；\n3. 你的看法（省钱、环保、便捷；注意防骗）。\n要求：80–100词。",themes:["B3","B8","B6"],
+    essay:`<span class="hl">Nowadays, buying and selling second-hand items online has become a new trend, especially among young people.<span class="tip">...has become a new trend, especially among... 现象+人群</span></span>\n\nLast month, I sold some old textbooks on a second-hand app. <span class="hl">To my surprise, they were sold out within two days.<span class="tip">To my surprise, ... 出乎意料（经历叙述）</span></span> I also bought a used calculator at half price, which saved me a lot of money.\n\n<span class="hl">Personally, I think this is a good way to save money and reduce waste at the same time.<span class="tip">Personally, I think this is a good way to... 个人评价</span></span> <span class="hl">However, we should be careful not to be cheated, and it is wise to check the quality before paying.<span class="tip">However, we should be careful not to... 提醒注意</span></span>`,
+    patterns:[{en:"...has become a new trend, especially among...",zh:"……已成为新趋势，尤其在……（现象描述）",type:"开头"},{en:"To my surprise, ...",zh:"令我惊讶的是……（叙述经历转折）",type:"连接"},{en:"Personally, I think this is a good way to...",zh:"就我个人而言，我认为这是……的好方法（评价）",type:"观点"},{en:"We should be careful not to..., and it is wise to...",zh:"我们应小心不要……，明智的做法是……（提醒建议）",type:"总结"}]
+  },
+  2024:{title:"My Views on the Craze for Hanfu",prompt:"1. 汉服流行人群、场所、时间；\n2. 你是否愿意尝试？为什么？\n3. 你对汉服热的看法。\n要求：80–100词。",themes:["B5","B3"],
+    essay:`<span class="hl">Recently, Hanfu, traditional Chinese clothing, has become very popular across China.<span class="tip">Recently, ..., ...(同位语), has become... 定义+趋势</span></span> People of all ages wear Hanfu in parks, tourist spots, and even on the street.\n\n<span class="hl">I would love to try wearing Hanfu because I think it is a beautiful way to show our traditional culture.<span class="tip">I would love to...because I think it is a way to... 意愿+原因</span></span> The elegant design and rich colors make people feel proud of Chinese history.\n\n<span class="hl">In my view, the craze for Hanfu is not just about fashion — it shows that more and more young people care about our cultural heritage.<span class="tip">...is not just about A — it shows that... 深层解读</span></span> <span class="hl">I hope this trend will continue and help spread Chinese culture to the world.<span class="tip">I hope...will...and help... 展望结尾</span></span>`,
+    patterns:[{en:"Recently, ...(同位语), has become...",zh:"最近，……（同位语解释）已变得……（引入话题）",type:"开头"},{en:"I would love to...because I think it is a way to...",zh:"我很想……因为我认为这是一种……（意愿表达）",type:"观点"},{en:"...is not just about A — it shows that...",zh:"……不仅仅是关于A——它说明……（深层分析）",type:"高级"},{en:"I hope...will...and help...",zh:"我希望……会……并帮助……（展望呼吁）",type:"总结"}]
+  },
+  2025:{title:"My Views on Growing Plants in the Classroom",prompt:"1. 描述教室养绿植现象（绿萝 pothos、多肉 succulents、富贵竹 lucky bamboo 等）；\n2. 利弊：清新空气、护眼、放松 vs 分散注意力、费时费力；\n3. 你的看法。\n要求：80–100词。",themes:["B7","B2"],
+    essay:`<span class="hl">It has become popular for students to grow plants such as pothos and succulents in the classroom.<span class="tip">It has become popular for sb. to do... 现象引入</span></span>\n\nGrowing plants in the classroom has several benefits. Plants can freshen the air and <span class="hl">make the classroom look more lively and comfortable.<span class="tip">make + n. + look + adj. 使役结构</span></span> Looking at green plants also helps relax our eyes after long hours of study.\n\n<span class="hl">However, some people worry that taking care of plants may take up study time and distract students.<span class="tip">However, some people worry that... 反方观点引入</span></span>\n\n<span class="hl">As far as I am concerned, the advantages outweigh the disadvantages.<span class="tip">The advantages outweigh the disadvantages 利大于弊</span></span> We can choose plants that are easy to care for and take turns looking after them. In this way, we can enjoy a greener classroom without wasting time.`,
+    patterns:[{en:"It has become popular for sb. to do...",zh:"做某事已变得流行（形式主语引入现象）",type:"开头"},{en:"make + n. + look + adj.",zh:"使……看起来……（使役动词结构）",type:"句型"},{en:"However, some people worry that...",zh:"然而，一些人担心……（引入反方观点）",type:"连接"},{en:"The advantages outweigh the disadvantages",zh:"利大于弊（经典议论文判断句）",type:"高级"}]
+  }
+};
+
+// ===== 12 PRACTICE (BLIND SPOT) ESSAYS =====
+const PRACTICE=[
+  {id:"P1",themeIds:["V2"],genre:"应用文·邮件",difficulty:"中等",
+    title:"A Thank-You Email After a Job Interview",
+    prompt:"假设你刚参加了一家公司的面试，请给面试官 Mr. Wang 写一封感谢邮件。\n1. 感谢面试机会；\n2. 表达对公司的兴趣；\n3. 期待回复。\n要求：80–100词，注意邮件格式。",
+    tip:"本题考查职场礼仪主题 + 应用文（邮件）格式。注意邮件的称呼、正文、结尾问候语的规范写法。",
+    essay:`Dear Mr. Wang,\n\n<span class="hl">I am writing to express my sincere thanks for giving me the opportunity to attend the interview yesterday.<span class="tip">I am writing to express... 邮件开头目的句</span></span>\n\nDuring the interview, I learned a lot about your company. <span class="hl">I was deeply impressed by the friendly working environment and the team spirit.<span class="tip">I was deeply impressed by... 表达印象</span></span> I am very interested in the position and <span class="hl">I believe my skills and experience are a good match for this job.<span class="tip">I believe...are a good match for... 自我推荐</span></span>\n\n<span class="hl">I would be grateful if you could let me know the result at your earliest convenience.<span class="tip">I would be grateful if... 礼貌请求</span></span>\n\nYours sincerely,\nLi Hua`,
+    patterns:[{en:"I am writing to express my sincere thanks for...",zh:"我写信是为了真诚感谢……（邮件目的句）",type:"开头"},{en:"I was deeply impressed by...",zh:"我对……印象深刻（表达感受）",type:"句型"},{en:"I believe my skills are a good match for...",zh:"我相信我的技能很适合……（自我推荐）",type:"观点"},{en:"I would be grateful if you could...",zh:"如果您能……我将不胜感激（礼貌请求）",type:"高级"}]
+  },
+  {id:"P2",themeIds:["V1"],genre:"应用文·求职信",difficulty:"中等",
+    title:"A Cover Letter for a Part-Time Job",
+    prompt:"你在网上看到一家餐厅招聘兼职服务员（part-time waiter/waitress），请写一封简短的求职信。\n1. 说明你从哪里得知招聘信息；\n2. 介绍你的优势（如英语好、有相关经验）；\n3. 表达希望获得面试机会。\n要求：80–100词，注意书信格式。",
+    tip:"本题考查求职应聘主题。求职信是新考纲明确要求的应用文体裁，注意用正式但简洁的语言。",
+    essay:`Dear Sir or Madam,\n\n<span class="hl">I am writing to apply for the part-time waiter position advertised on your website.<span class="tip">I am writing to apply for... 求职信标准开头</span></span>\n\nI am a student at Nanjing Vocational School. <span class="hl">I have a good command of English, which allows me to communicate with foreign customers.<span class="tip">have a good command of... 技能描述</span></span> Last summer, I worked at a coffee shop for two months, so I have some experience in customer service. <span class="hl">In addition, I am a quick learner and enjoy working with people.<span class="tip">In addition, I am a quick learner 个人品质描述</span></span>\n\n<span class="hl">I would appreciate it if you could give me a chance for an interview.<span class="tip">I would appreciate it if... 礼貌请求句</span></span>\n\nYours faithfully,\nLi Hua`,
+    patterns:[{en:"I am writing to apply for...",zh:"我写信申请……（求职信开头）",type:"开头"},{en:"have a good command of...",zh:"精通/掌握……（技能描述）",type:"句型"},{en:"I am a quick learner and enjoy...",zh:"我学东西快，喜欢……（品质描述）",type:"观点"},{en:"I would appreciate it if you could...",zh:"如果您能……我将非常感激（礼貌结尾）",type:"高级"}]
+  },
+  {id:"P3",themeIds:["V3"],genre:"议论文",difficulty:"较易",
+    title:"My Views on Good Customer Service",
+    prompt:"1. 好的客户服务（customer service）的重要性；\n2. 好的客户服务包括哪些方面（态度、效率、解决问题）；\n3. 你的看法或亲身体验。\n要求：80–100词。",
+    tip:"本题考查职场服务主题。引导学生思考服务意识，体现考纲'在职业情境中运用英语'的要求。",
+    essay:`<span class="hl">Good customer service plays an important role in every business.<span class="tip">...plays an important role in... 重要性引出</span></span> It can make customers happy and help a company grow.\n\n<span class="hl">In my opinion, good service includes three key points.<span class="tip">...includes three key points 分点预告</span></span> First, workers should always be polite and patient. Second, they should respond to customers quickly and solve problems on time. <span class="hl">Last but not least, a warm smile and a helpful attitude can make a big difference.<span class="tip">Last but not least, ... 最后要点强调</span></span>\n\nLast week, a shop assistant helped me exchange a broken product without any complaint. <span class="hl">Her kindness left a deep impression on me and made me want to visit the shop again.<span class="tip">...left a deep impression on me 经历+感受</span></span>`,
+    patterns:[{en:"...plays an important role in...",zh:"……在……中扮演重要角色（重要性）",type:"开头"},{en:"...includes three key points",zh:"……包括三个要点（分点预告）",type:"连接"},{en:"Last but not least, ...",zh:"最后但同样重要的是……（末点强调）",type:"连接"},{en:"...left a deep impression on me",zh:"……给我留下深刻印象（经历总结）",type:"总结"}]
+  },
+  {id:"P4",themeIds:["V4","V5"],genre:"说明文",difficulty:"中等",
+    title:"How to Use a 3D Printer in Our Workshop",
+    prompt:"1. 简单介绍3D打印机在学校实训车间的用途；\n2. 简述基本操作步骤（设计→导入→打印→取出）；\n3. 使用时的注意事项。\n要求：80–100词。",
+    tip:"本题考查设备操作+技术应用双主题，说明文体裁。考纲要求能在'模拟的职业情境'中运用英语。",
+    essay:`<span class="hl">Our school has a 3D printer in the workshop, which is used to make models and small parts.<span class="tip">...which is used to... 定语从句说明用途</span></span>\n\n<span class="hl">The steps to use it are as follows.<span class="tip">The steps are as follows 说明文标准引导句</span></span> First, design the model on the computer using special software. Then, save the file and send it to the printer. Next, press the start button and wait for the machine to finish printing. Finally, take out the product carefully after it cools down.\n\n<span class="hl">When using the printer, we should wear safety glasses and keep our hands away from the hot parts.<span class="tip">When doing..., we should... 注意事项句型</span></span> <span class="hl">It is also important to read the instructions before we start.<span class="tip">It is also important to... 补充提醒</span></span>`,
+    patterns:[{en:"...which is used to...",zh:"……被用来……（定语从句说明功能）",type:"句型"},{en:"The steps are as follows.",zh:"步骤如下。（说明文引导句）",type:"开头"},{en:"When doing..., we should...",zh:"当做……时，我们应该……（注意事项）",type:"连接"},{en:"It is also important to...",zh:"……也很重要（补充提醒）",type:"总结"}]
+  },
+  {id:"P5",themeIds:["V6"],genre:"应用文·通知",difficulty:"中等",
+    title:"A Notice About Workplace Safety Training",
+    prompt:"假设你是学校实训中心的负责人，请写一则通知。\n1. 通知对象：全体实训学生；\n2. 内容：下周一进行安全培训（safety training），地点、时间；\n3. 要求：准时参加，带笔记本。\n要求：80–100词，注意通知格式。",
+    tip:"本题考查职场安全主题 + 应用文（通知）格式。通知是考纲要求但从未考过的重要文体。",
+    essay:`<div style="text-align:center;font-weight:700;margin-bottom:8px">NOTICE</div>\n\nDear students,\n\n<span class="hl">In order to improve workplace safety awareness, a safety training session will be held next Monday.<span class="tip">In order to..., ...will be held... 目的+被动句</span></span>\n\n<span class="hl">The details are as follows.<span class="tip">The details are as follows. 通知正文引导</span></span> Time: Monday, March 10, 2:00–4:00 PM. Place: Training Room 301. Speaker: Mr. Zhang, our safety officer.\n\n<span class="hl">All students who take part in workshop practice are required to attend on time.<span class="tip">...are required to attend... 通知要求句</span></span> Please bring a notebook and pen. <span class="hl">Anyone who is absent without a valid reason will not be allowed to enter the workshop next week.<span class="tip">Anyone who...will not be allowed to... 规则说明</span></span>\n\nTraining Center\nMarch 5, 2027`,
+    patterns:[{en:"In order to..., ...will be held...",zh:"为了……，将举行……（目的+被动通知）",type:"开头"},{en:"The details are as follows.",zh:"详情如下。（通知引导句）",type:"连接"},{en:"...are required to attend on time.",zh:"……要求准时参加（通知要求）",type:"句型"},{en:"Anyone who...will not be allowed to...",zh:"任何……的人将不被允许……（规则警告）",type:"高级"}]
+  },
+  {id:"P6",themeIds:["V7"],genre:"议论文",difficulty:"较难",
+    title:"My Views on How to Deal with Emergencies at Work",
+    prompt:"1. 工作中可能遇到的紧急情况（如火灾、受伤、设备故障）；\n2. 正确的应对方法；\n3. 提前准备的重要性。\n要求：80–100词。",
+    tip:"本题考查危机应对主题，要求考生在职业语境中分析问题和解决问题，难度略高。",
+    essay:`<span class="hl">Emergencies can happen anytime at the workplace, such as fires, injuries, or machine failures.<span class="tip">...can happen anytime, such as... 话题引入+举例</span></span>\n\n<span class="hl">When facing an emergency, the most important thing is to stay calm.<span class="tip">When facing..., the most important thing is to... 核心观点</span></span> For example, if there is a fire, we should call 119 at once and leave the building through the nearest exit. If someone gets hurt, we should give basic first aid and call for help immediately.\n\n<span class="hl">In my opinion, it is necessary for every worker to learn basic safety knowledge in advance.<span class="tip">It is necessary for sb. to... 建议必要性</span></span> <span class="hl">Only when we are well prepared can we protect ourselves and others in dangerous situations.<span class="tip">Only when...can we... 倒装强调</span></span>`,
+    patterns:[{en:"...can happen anytime, such as...",zh:"……随时可能发生，例如……（话题引入）",type:"开头"},{en:"When facing..., the most important thing is to...",zh:"面对……时，最重要的是……（核心观点）",type:"观点"},{en:"It is necessary for sb. to...",zh:"某人做……是必要的（建议）",type:"句型"},{en:"Only when...can we...",zh:"只有当……我们才能……（倒装强调）",type:"高级"}]
+  },
+  {id:"P7",themeIds:["V8"],genre:"议论文",difficulty:"中等",
+    title:"My Views on Following Rules at Work",
+    prompt:"1. 遵守职业规则（workplace rules）的重要性；\n2. 举例说明常见的职业规则（如准时、着装、保密）；\n3. 你的看法。\n要求：80–100词。",
+    tip:"本题考查职业规则主题，引导学生理解规则意识和职业素养，体现考纲'职业精神'要求。",
+    essay:`<span class="hl">Following rules at work is very important for both individuals and companies.<span class="tip">...is very important for both A and B 双向重要性</span></span>\n\n<span class="hl">There are many common workplace rules that we should follow.<span class="tip">There are many...that we should... 列举引导</span></span> For example, we should arrive on time every day and wear proper uniforms. We should also keep company information private and not share it with others. <span class="hl">Besides, being polite to colleagues and customers is a basic requirement.<span class="tip">Besides, doing...is a basic requirement 补充要求</span></span>\n\n<span class="hl">As a future worker, I believe that following rules is not only a duty but also a way to show respect for our job.<span class="tip">...is not only A but also B 递进价值判断</span></span> Good habits at work will help us build a successful career.`,
+    patterns:[{en:"...is very important for both A and B",zh:"……对A和B都很重要（双向论述）",type:"开头"},{en:"There are many...that we should...",zh:"有很多……是我们应该……（列举引导）",type:"连接"},{en:"Besides, doing...is a basic requirement",zh:"此外，做……是基本要求（补充论述）",type:"连接"},{en:"...is not only A but also B",zh:"……不仅是A也是B（递进判断结尾）",type:"总结"}]
+  },
+  {id:"P8",themeIds:["B4"],genre:"议论文",difficulty:"较易",
+    title:"My Views on Volunteer Work",
+    prompt:"1. 志愿服务越来越受欢迎；\n2. 参加志愿活动的好处（帮助他人、锻炼自己、社会责任）；\n3. 你的看法或经历。\n要求：80–100词。",
+    tip:"本题考查社会服务主题，是基础模块中唯一的十年零覆盖主题。",
+    essay:`<span class="hl">In recent years, volunteer work has become more and more popular in China.<span class="tip">In recent years, ...has become more and more popular 趋势开头</span></span>\n\nDoing volunteer work has many benefits. <span class="hl">First, it gives us a chance to help people in need and make a positive difference in society.<span class="tip">It gives us a chance to... 好处阐述</span></span> Second, we can learn useful skills such as teamwork and communication. <span class="hl">More importantly, it helps us understand the value of giving.<span class="tip">More importantly, ... 递进要点</span></span>\n\nLast summer, I helped teach English to children in a village school. <span class="hl">Although it was hard, the smiles on their faces made everything worthwhile.<span class="tip">Although..., ...made everything worthwhile 转折升华</span></span> I will keep doing volunteer work in the future.`,
+    patterns:[{en:"In recent years, ...has become more and more popular",zh:"近年来，……越来越受欢迎（趋势引入）",type:"开头"},{en:"It gives us a chance to...",zh:"它给我们一个……的机会（好处表述）",type:"句型"},{en:"More importantly, ...",zh:"更重要的是……（递进要点）",type:"连接"},{en:"Although..., ...made everything worthwhile",zh:"虽然……，但……让一切值得（转折升华）",type:"高级"}]
+  },
+  {id:"P9",themeIds:["E2"],genre:"议论文",difficulty:"中等",
+    title:"My Views on AI in Our Daily Life",
+    prompt:"1. AI（人工智能）在日常生活中的应用越来越多；\n2. AI 带来的好处与可能的问题；\n3. 你的看法。\n要求：80–100词。",
+    tip:"本题考查技术创新主题，结合社会热点，体现考纲'弘扬时代精神，体现时代主题'的要求。",
+    essay:`<span class="hl">Artificial intelligence, or AI, is changing our daily life in many ways.<span class="tip">..., or...(缩写解释), is changing... 话题定义+引入</span></span> We can see AI in smart phones, online shopping, and even in hospitals.\n\n<span class="hl">There is no doubt that AI brings us great convenience.<span class="tip">There is no doubt that... 肯定判断</span></span> It helps us save time and work more efficiently. <span class="hl">However, some people are worried that AI may replace human jobs and cause new problems.<span class="tip">However, some people are worried that... 反方担忧</span></span>\n\n<span class="hl">Personally, I think AI is a powerful tool, but we should learn to use it wisely.<span class="tip">...is a powerful tool, but we should... 辩证观点</span></span> <span class="hl">As students, we need to keep learning new skills so that we can work together with AI in the future.<span class="tip">...so that we can... 目的从句</span></span>`,
+    patterns:[{en:"..., or...(缩写解释), is changing...",zh:"……，即……，正在改变……（定义引入）",type:"开头"},{en:"There is no doubt that...",zh:"毫无疑问……（肯定判断）",type:"高级"},{en:"However, some people are worried that...",zh:"然而，有人担心……（反方观点）",type:"连接"},{en:"...so that we can...",zh:"……以便我们能够……（目的从句）",type:"句型"}]
+  },
+  {id:"P10",themeIds:["V1","E1"],genre:"应用文·邮件",difficulty:"较难",
+    title:"An Email About Your Career Plan",
+    prompt:"假设你的英语老师 Ms. Li 请同学们写一封邮件，谈谈毕业后的职业规划。\n1. 你打算从事什么工作；\n2. 你打算如何提升自己（学历、技能、证书等）；\n3. 你的长期目标。\n要求：80–100词，注意邮件格式。",
+    tip:"本题交叉考查求职应聘+自我发展，邮件体裁。体现考纲'职业性+综合性'要求。",
+    essay:`Dear Ms. Li,\n\n<span class="hl">Thank you for asking us to think about our future career plans. I would like to share mine with you.<span class="tip">Thank you for asking... I would like to share... 邮件开场</span></span>\n\nAfter graduation, I plan to work as an electrician in a factory. <span class="hl">In order to improve myself, I will study for a vocational certificate and take extra training courses.<span class="tip">In order to..., I will... 提升计划</span></span> I also want to improve my English so that I can read technical documents.\n\n<span class="hl">My long-term goal is to become a senior technician and even start my own business one day.<span class="tip">My long-term goal is to... 长期目标</span></span> <span class="hl">I believe that with hard work and determination, I can achieve my dream step by step.<span class="tip">I believe that with..., I can... 信念结尾</span></span>\n\nBest regards,\nLi Hua`,
+    patterns:[{en:"Thank you for asking... I would like to share...",zh:"感谢您让我们……我想分享……（邮件开场）",type:"开头"},{en:"In order to improve myself, I will...",zh:"为了提升自己，我将……（计划表述）",type:"连接"},{en:"My long-term goal is to...",zh:"我的长期目标是……（目标表述）",type:"观点"},{en:"I believe that with..., I can...",zh:"我相信凭借……我能……（信念结尾）",type:"总结"}]
+  },
+  {id:"P11",themeIds:["V3","B3"],genre:"应用文·邮件",difficulty:"中等",
+    title:"A Reply to a Customer Complaint",
+    prompt:"假设你在一家网店工作，收到顾客 David 的投诉邮件，说收到的商品有损坏。请写一封回复邮件。\n1. 表示歉意；\n2. 提出解决方案（换货或退款）；\n3. 表示会改进服务。\n要求：80–100词，注意邮件格式。",
+    tip:"本题交叉考查职场服务+社会交往，考查在职业情境中解决实际问题的能力。",
+    essay:`Dear David,\n\n<span class="hl">Thank you for writing to us. We are very sorry to hear that the product you received was damaged.<span class="tip">We are very sorry to hear that... 道歉表达</span></span>\n\n<span class="hl">We take this matter very seriously and would like to offer you two options.<span class="tip">We take this matter seriously and would like to offer... 重视+方案</span></span> We can either send you a new product free of charge, or give you a full refund. Please let us know which you prefer.\n\n<span class="hl">We promise to improve our packaging to prevent this from happening again.<span class="tip">We promise to...to prevent... 改进承诺</span></span> <span class="hl">Once again, we apologize for the inconvenience and thank you for your understanding.<span class="tip">Once again, we apologize for... 再次致歉</span></span>\n\nBest regards,\nLi Hua\nCustomer Service`,
+    patterns:[{en:"We are very sorry to hear that...",zh:"得知……我们深感抱歉（道歉句）",type:"开头"},{en:"We take this matter seriously and would like to offer...",zh:"我们非常重视此事，愿意提供……（解决方案）",type:"观点"},{en:"We promise to...to prevent...",zh:"我们承诺……以防止……（改进承诺）",type:"句型"},{en:"Once again, we apologize for the inconvenience",zh:"再次为不便致歉（结尾道歉）",type:"总结"}]
+  },
+  {id:"P12",themeIds:["E3","B8"],genre:"议论文",difficulty:"中等",
+    title:"My Views on Saving Energy at School",
+    prompt:"1. 学校中常见的能源浪费现象；\n2. 节约能源的方法；\n3. 作为中职生，你能做什么。\n要求：80–100词。",
+    tip:"本题交叉考查环境保护+可持续发展，与真题2020年（垃圾分类）形成主题互补。",
+    essay:`<span class="hl">Energy waste is a common problem in many schools.<span class="tip">...is a common problem in... 问题引入</span></span> We can often see lights left on in empty classrooms and computers running all day without use.\n\n<span class="hl">To deal with this problem, we can take several simple actions.<span class="tip">To deal with..., we can take... 解决方案引入</span></span> First, remember to turn off the lights and fans when leaving the classroom. Second, use natural light as much as possible during the day. <span class="hl">What's more, schools can put up signs to remind everyone to save energy.<span class="tip">What's more, ...can...to remind... 补充建议</span></span>\n\n<span class="hl">As vocational school students, we should set a good example and make saving energy a daily habit.<span class="tip">As..., we should set a good example and... 身份倡议</span></span> Small actions can lead to big changes.`,
+    patterns:[{en:"...is a common problem in...",zh:"……是……中常见的问题（问题引入）",type:"开头"},{en:"To deal with..., we can take several actions.",zh:"为了应对……，我们可以采取几项措施（方案引导）",type:"连接"},{en:"What's more, ...can...to remind...",zh:"此外，……可以……来提醒……（补充建议）",type:"连接"},{en:"As..., we should set a good example and...",zh:"作为……，我们应以身作则，并……（身份倡议结尾）",type:"总结"}]
+  }
+];
+
+// ==================== COMPUTED ====================
+const coverCount={};
+allThemes.forEach(t=>{coverCount[t.id]=YEARS.filter(y=>MATRIX[y]?.[t.id]).length});
+const uncovered=allThemes.filter(t=>coverCount[t.id]===0);
+const totalCells=allThemes.length*YEARS.length;
+const filledCells=YEARS.reduce((s,y)=>s+Object.keys(MATRIX[y]||{}).length,0);
+const coverageRate=(filledCells/totalCells*100).toFixed(1);
+function getModFor(id){return MODULES.find(m=>m.themes.some(t=>t.id===id))}
+
+// ==================== RENDER ====================
+
+// Stats
+document.getElementById('stats').innerHTML=[
+  {l:"考纲主题",v:"19个",n:"3大模块",c:"#fff"},
+  {l:"十年覆盖率",v:coverageRate+"%",n:filledCells+"/"+totalCells+"格",c:"var(--red)"},
+  {l:"零覆盖主题",v:uncovered.length+"个",n:"命题盲区",c:"var(--yellow)"},
+  {l:"真题范文",v:"10篇",n:"含句型标注",c:"var(--cyan)"},
+  {l:"预测练习",v:"12道",n:"盲区补强",c:"var(--pink)"},
+  {l:"句型库",v:(Object.values(DATA).reduce((a,d)=>a+d.patterns.length,0)+PRACTICE.reduce((a,p)=>a+p.patterns.length,0))+"条",n:"分类索引",c:"var(--purple)"}
+].map(s=>`<div class="stat"><div class="stat-label">${s.l}</div><div class="stat-val" style="color:${s.c}">${s.v}</div><div class="stat-note">${s.n}</div></div>`).join('');
+
+document.getElementById('pracBadge').textContent=PRACTICE.length;
+
+// ===== TAB SWITCHING =====
+document.querySelectorAll('.vtab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.vtab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('show'));
+    document.getElementById('sec-'+tab.dataset.tab).classList.add('show');
+  });
+});
+
+// ===== MODULE FILTER =====
+let activeFilter=null;
+const toolbar=document.getElementById('toolbar');
+const allBtn=document.createElement('button');
+allBtn.className='tbtn active';allBtn.textContent='全部';allBtn.dataset.mod='all';
+toolbar.appendChild(allBtn);
+MODULES.forEach(m=>{
+  const b=document.createElement('button');
+  b.className='tbtn';b.textContent=m.name;b.dataset.mod=m.name;
+  toolbar.appendChild(b);
+});
+
+function applyFilter(modName){
+  activeFilter=modName==='all'?null:modName;
+  document.querySelectorAll('#toolbar .tbtn').forEach(b=>b.classList.toggle('active',b.dataset.mod===(activeFilter||'all')));
+  // dim rows
+  document.querySelectorAll('#matrix .mod').forEach(tr=>{
+    const td=tr.querySelector('td');
+    const name=td.textContent.trim();
+    tr.classList.toggle('dim',activeFilter&&name!==activeFilter);
+  });
+  document.querySelectorAll('#matrix .dr').forEach(tr=>{
+    const tnTd=tr.querySelector('.tn');
+    const label=tnTd.textContent.replace('⚠ ','').trim();
+    const theme=allThemes.find(t=>t.label===label);
+    if(!theme){tr.classList.add('dim');return}
+    const mod=getModFor(theme.id);
+    tr.classList.toggle('dim',activeFilter&&mod.name!==activeFilter);
+  });
+}
+toolbar.addEventListener('click',e=>{
+  const b=e.target.closest('.tbtn');
+  if(b)applyFilter(b.dataset.mod);
+});
+
+// ===== RENDER TABLE =====
+let html='<thead><tr><th class="corner">模块 / 主题</th>';
+YEARS.forEach(y=>{html+=`<th class="yr" data-y="${y}"><div class="y-num">${y}</div><div class="y-dot"></div></th>`});
+html+='<th class="cnt">覆盖<br>次数</th></tr></thead><tbody>';
+
+MODULES.forEach(mod=>{
+  html+=`<tr class="mod"><td colspan="${YEARS.length+2}" style="color:${mod.hex};background:${mod.hex}0d">${mod.name}</td></tr>`;
+  mod.themes.forEach(t=>{
+    const c=coverCount[t.id];
+    const cc=c===0?'var(--red)':c>=3?'var(--green)':'var(--yellow)';
+    html+=`<tr class="dr"><td class="tn${c===0?' zero':''}">${c===0?'⚠ ':''}${t.label}</td>`;
+    YEARS.forEach(y=>{
+      const v=MATRIX[y]?.[t.id]||0;
+      let bg='transparent';
+      if(v===2)bg=mod.hex;else if(v===1)bg=mod.hex+'44';
+      html+=`<td class="cell" data-y="${y}"><div class="pip ${v?'filled':'empty'}" style="background:${bg}" data-year="${y}"></div></td>`;
+    });
+    html+=`<td class="cnt-cell" style="color:${cc}">${c}</td></tr>`;
+  });
+});
+html+='</tbody>';
+document.getElementById('matrix').innerHTML=html;
+
+// Blind section
+document.getElementById('blind').innerHTML=`
+  <div class="blind-hd">⚠ 命题盲区（十年零覆盖）→ 点击上方「盲区预测练习」标签查看完整练习题</div>
+  <div class="blind-tags">${uncovered.map(t=>{const m=getModFor(t.id);return `<span class="blind-tag" style="background:${m.hex}15;color:${m.hex};border:1px solid ${m.hex}33">${t.label}</span>`}).join('')}</div>
+  <div class="blind-note">职业模块 8 个主题中 7 个从未出现在作文真题中。应用文体裁（邮件/书信/通知）也需纳入备考。<br>→ 切换到「盲区预测练习」标签，查看12道针对性练习题（含范文 + 句型）。</div>`;
+
+// ===== PRACTICE SECTION =====
+let practiceFilter='all';
+const ptoolbar=document.getElementById('ptoolbar');
+['全部','议论文','说明文','应用文·邮件','应用文·求职信','应用文·通知'].forEach(g=>{
+  const b=document.createElement('button');
+  b.className='tbtn'+(g==='全部'?' active':'');b.textContent=g;b.dataset.genre=g;
+  ptoolbar.appendChild(b);
+});
+ptoolbar.addEventListener('click',e=>{
+  const b=e.target.closest('.tbtn');if(!b)return;
+  practiceFilter=b.dataset.genre;
+  ptoolbar.querySelectorAll('.tbtn').forEach(x=>x.classList.toggle('active',x.dataset.genre===practiceFilter));
+  renderPractice();
+});
+
+function renderPractice(){
+  const grid=document.getElementById('practiceGrid');
+  const items=practiceFilter==='全部'?PRACTICE:PRACTICE.filter(p=>p.genre===practiceFilter);
+  grid.innerHTML=items.map(p=>{
+    const thLabels=p.themeIds.map(id=>{const t=allThemes.find(x=>x.id===id);return t?t.label:id}).join(' + ');
+    const mod=getModFor(p.themeIds[0]);
+    const diffColor=p.difficulty==='较易'?'var(--green)':p.difficulty==='中等'?'var(--yellow)':'var(--red)';
+    return `<div class="pcard" data-pid="${p.id}">
+      <div class="pcard-top">
+        <div class="pcard-badge" style="background:${mod.hex}22;color:${mod.hex};border:1px solid ${mod.hex}44">${p.genre}</div>
+        <div class="pcard-theme" style="color:${mod.hex}">${thLabels}</div>
+        <div class="pcard-title">${p.title}</div>
+        <div class="pcard-desc">${p.prompt.split('\n')[0]}</div>
+      </div>
+      <div class="pcard-foot">
+        <span style="color:${diffColor}">● ${p.difficulty}</span>
+        <button class="pcard-btn" style="background:${mod.hex};color:#fff" onclick="event.stopPropagation()">查看范文 →</button>
+      </div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.pcard').forEach(card=>{
+    card.addEventListener('click',()=>openPractice(card.dataset.pid));
+  });
+}
+renderPractice();
+
+// ===== SENTENCE BANK =====
+const allPatterns=[];
+Object.entries(DATA).forEach(([y,d])=>{
+  d.patterns.forEach(p=>allPatterns.push({...p,src:`${y}年真题 · ${d.title}`}));
+});
+PRACTICE.forEach(p=>{
+  p.patterns.forEach(pt=>allPatterns.push({...pt,src:`预测练习 · ${p.title}`}));
+});
+const bankTypes=[...new Set(allPatterns.map(p=>p.type))];
+
+let bankFilter='all';
+const bankFilters=document.getElementById('bankFilters');
+const abtn=document.createElement('button');abtn.className='bfbtn active';abtn.textContent='全部 ('+allPatterns.length+')';abtn.dataset.type='all';
+bankFilters.appendChild(abtn);
+bankTypes.forEach(t=>{
+  const cnt=allPatterns.filter(p=>p.type===t).length;
+  const b=document.createElement('button');b.className='bfbtn';b.textContent=t+' ('+cnt+')';b.dataset.type=t;
+  bankFilters.appendChild(b);
+});
+bankFilters.addEventListener('click',e=>{
+  const b=e.target.closest('.bfbtn');if(!b)return;
+  bankFilter=b.dataset.type;
+  bankFilters.querySelectorAll('.bfbtn').forEach(x=>x.classList.toggle('active',x.dataset.type===bankFilter));
+  renderBank();
+});
+
+function renderBank(){
+  const items=bankFilter==='all'?allPatterns:allPatterns.filter(p=>p.type===bankFilter);
+  document.getElementById('bankList').innerHTML=items.map(p=>`
+    <div class="bcard">
+      <span class="bcard-type" style="background:${typeColors[p.type]||'#666'}">${p.type}</span>
+      <div class="bcard-en">${p.en}</div>
+      <div class="bcard-zh">${p.zh}</div>
+      <div class="bcard-src">来源：${p.src}</div>
+    </div>`).join('');
+}
+renderBank();
+
+// ==================== MODAL ====================
+const overlay=document.getElementById('overlay');
+function closePanel(){overlay.classList.remove('show');document.body.style.overflow=''}
+document.getElementById('panelClose').addEventListener('click',closePanel);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closePanel()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closePanel()});
+
+function renderPanelContent(cfg){
+  const {yearLabel,title,prompt,themes,essay,patterns,isPractice,difficulty,genre,tip}=cfg;
+  const plain=essay.replace(/<[^>]+>/g,'');
+  const wc=plain.trim().split(/\s+/).length;
+  let h=`<div class="panel-head">
+    <div class="panel-year${isPractice?' pred':''}">${yearLabel}</div>
+    <div class="panel-title">${title}</div>
+    <div class="panel-prompt${isPractice?' pred':''}">${prompt.replace(/\n/g,'<br>')}</div>
+  </div>`;
+  if(isPractice){
+    h+=`<div class="panel-diff">
+      <div class="diff-item"><span class="diff-dot" style="background:${genre.includes('应用')?'var(--pink)':'var(--cyan)'}"></span>${genre}</div>
+      <div class="diff-item"><span class="diff-dot" style="background:${difficulty==='较易'?'var(--green)':difficulty==='中等'?'var(--yellow)':'var(--red)'}"></span>难度：${difficulty}</div>
+    </div>`;
+    if(tip)h+=`<div class="writing-tip"><strong>教学提示：</strong>${tip}</div>`;
+  }
+  h+=`<div class="panel-themes"><span class="label">关联主题</span>`;
+  themes.forEach(tid=>{
+    const t=allThemes.find(x=>x.id===tid);
+    const mod=getModFor(tid);
+    h+=`<span class="tag" style="background:${mod.hex}22;color:${mod.hex};border:1px solid ${mod.hex}44">${t?t.label:tid}</span>`;
+  });
+  h+=`</div>`;
+  h+=`<div class="panel-essay"><div class="sec-label">${isPractice?'参考范文 Model Essay':'范文 Model Essay'}</div><div class="essay-body">${essay}</div><div class="word-count">词数：约 ${wc} 词</div></div>`;
+  h+=`<div class="panel-patterns"><div class="sec-label">亮点句型 Key Patterns</div>`;
+  patterns.forEach(p=>{
+    h+=`<div class="pattern"><span class="pattern-type" style="background:${typeColors[p.type]||'#666'}">${p.type}</span><span class="pattern-en">${p.en}</span><div class="pattern-zh">${p.zh}</div></div>`;
+  });
+  h+=`</div>`;
+  document.getElementById('panelContent').innerHTML=h;
+  overlay.classList.add('show');
+  document.body.style.overflow='hidden';
+  document.getElementById('panel').scrollTop=0;
+}
+
+function openYear(year){
+  const d=DATA[year];if(!d)return;
+  renderPanelContent({yearLabel:year+'年 · 江苏中职职教高考英语',title:d.title,prompt:d.prompt,themes:d.themes,essay:d.essay,patterns:d.patterns,isPractice:false});
+}
+
+function openPractice(pid){
+  const p=PRACTICE.find(x=>x.id===pid);if(!p)return;
+  const thLabels=p.themeIds.map(id=>{const t=allThemes.find(x=>x.id===id);return t?t.label:id}).join(' + ');
+  renderPanelContent({yearLabel:'盲区预测练习 · '+thLabels,title:p.title,prompt:p.prompt,themes:p.themeIds,essay:p.essay,patterns:p.patterns,isPractice:true,difficulty:p.difficulty,genre:p.genre,tip:p.tip});
+}
+
+// Table click handlers
+document.querySelectorAll('.yr').forEach(th=>{th.addEventListener('click',()=>openYear(parseInt(th.dataset.y)))});
+document.querySelectorAll('.pip.filled').forEach(p=>{p.addEventListener('click',e=>{e.stopPropagation();openYear(parseInt(p.dataset.year))})});
+
+// Column hover
+let hlCol=null;
+document.querySelectorAll('.yr').forEach(th=>{
+  th.addEventListener('mouseenter',()=>{hlCol=th.dataset.y;document.querySelectorAll(`.cell[data-y="${hlCol}"]`).forEach(c=>c.classList.add('hl'))});
+  th.addEventListener('mouseleave',()=>{if(hlCol)document.querySelectorAll(`.cell[data-y="${hlCol}"]`).forEach(c=>c.classList.remove('hl'));hlCol=null});
+});
+</script>
+</body>
+</html>
