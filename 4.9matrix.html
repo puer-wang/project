@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>考纲-真题写作主题覆盖分析与靶向训练系统</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f1117;--bg2:#18181b;--bg3:#1c1c22;--border:#27272a;--t1:#f4f4f5;--t2:#a1a1aa;--t3:#71717a;--t4:#52525b}
+[data-theme="light"]{--bg:#f5f5f5;--bg2:#ffffff;--bg3:#ffffff;--border:#e0e0e0;--t1:#1a1a1a;--t2:#555;--t3:#888;--t4:#aaa}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;padding:24px 16px;transition:background .3s,color .3s}
+.wrap{max-width:1140px;margin:0 auto}
+h1{font-size:22px;font-weight:900;display:inline}
+.sub{font-size:11px;color:var(--t3);margin-left:10px}
+.desc{font-size:12px;color:var(--t2);margin:4px 0 6px;line-height:1.7}
+.ldot{display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:middle;margin:0 2px}
+.header-row{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px}
+.mode-btn{padding:6px 14px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid var(--border);background:var(--bg2);color:var(--t2);cursor:pointer;transition:all .2s;white-space:nowrap}
+.mode-btn:hover{border-color:var(--t3)}
+.evi-bar{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;margin-bottom:16px;display:flex;gap:18px;flex-wrap:wrap;font-size:10px;color:var(--t2)}
+.evi-bar b{color:var(--t1)}
+.stats{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.sc{background:var(--bg2);border-radius:8px;padding:12px 16px;border:1px solid var(--border);flex:1;min-width:110px}
+.sc .l{font-size:10px;color:var(--t3);margin-bottom:2px}
+.sc .v{font-size:20px;font-weight:900}
+.sc .s{font-size:10px;color:var(--t4);margin-top:1px}
+.tabs{display:flex;gap:0;margin-bottom:14px;border-bottom:2px solid var(--border)}
+.tab{padding:8px 18px;font-size:12px;font-weight:600;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer;user-select:none;transition:color .15s}
+.tab:hover{color:var(--t2)}
+.tab.a{color:var(--t1);border-bottom-color:#2563eb}
+.tab .badge{background:#ef4444;color:#fff;font-size:8px;padding:1px 5px;border-radius:8px;margin-left:4px;font-weight:700}
+.tab-content{display:none}.tab-content.show{display:block}
+.toolbar{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.tb{padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid var(--border);background:var(--bg2);color:var(--t2);cursor:pointer;transition:all .15s;user-select:none}
+.tb:hover{border-color:var(--t3)}
+.tb.a{background:#2563eb22;color:#2563eb;border-color:#2563eb44}
+.mw{overflow-x:auto;border-radius:10px;border:1px solid var(--border);background:var(--bg2)}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th{padding:8px 5px;font-size:10px;font-weight:600;color:var(--t2);border-bottom:2px solid var(--border);text-align:center;position:sticky;top:0;background:var(--bg2);z-index:2}
+th.co{text-align:left;width:100px;border-right:2px solid var(--border);padding-left:10px}
+th.cc{width:42px;border-left:2px solid var(--border);font-size:9px}
+th.yc{cursor:pointer;transition:background .15s;user-select:none;min-width:54px}
+th.yc:hover{background:var(--border)}
+th.yc.a{background:var(--border)}
+.mr td{padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:1.5px;border-bottom:1px solid var(--border)}
+.dr{transition:background .1s}.dr:hover{background:rgba(255,255,255,.03)}
+.dr td{border-bottom:1px solid rgba(255,255,255,.04)}
+.dr.dim{opacity:.2;pointer-events:none}
+.tn{padding:4px 10px;font-size:11px;font-weight:500;white-space:nowrap;border-right:2px solid var(--border)}
+.tn.z{color:#ef4444}
+.cl{padding:0;text-align:center}
+.dt{width:30px;height:24px;margin:2px auto;border-radius:4px;transition:transform .15s}
+.dt.f{cursor:pointer}.dt.f:hover{transform:scale(1.2);box-shadow:0 0 8px rgba(255,255,255,.15)}
+.dt.e{border:1px solid rgba(128,128,128,.15)}
+.cnt{text-align:center;font-size:13px;font-weight:800;border-left:2px solid var(--border)}
+.col-hl{background:rgba(39,39,42,.25)!important}
+.blind{margin-top:16px;background:#1c1917;border-radius:8px;padding:14px 16px;border:1px solid #44403c}
+[data-theme="light"] .blind{background:#fef9ee;border-color:#e5d5b0}
+.blind-t{font-size:12px;font-weight:700;color:#fbbf24;margin-bottom:8px}
+.blind-tags{display:flex;flex-wrap:wrap;gap:6px}
+.btg{padding:4px 12px;border-radius:5px;font-size:11px;font-weight:600}
+.blind-note{font-size:10px;color:#78716c;margin-top:10px;line-height:1.8}
+.diag{margin-top:14px;background:#0c0c14;border-radius:8px;padding:14px 16px;border:1px solid #2563eb44}
+[data-theme="light"] .diag{background:#eef4fc;border-color:#b5d4f4}
+.diag-t{font-size:12px;font-weight:700;color:#2563eb;margin-bottom:6px}
+.diag-body{font-size:11px;color:var(--t2);line-height:1.9}
+.diag-body b{color:var(--t1)}
+/* Overlay & Modal */
+.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:100;overflow-y:auto;padding:40px 16px}
+.overlay.show{display:flex;justify-content:center;align-items:flex-start}
+.modal{background:var(--bg3);border-radius:12px;border:1px solid var(--border);max-width:720px;width:100%;padding:24px 28px;position:relative;margin:20px auto;animation:fadeIn .2s}
+.modal .close{position:absolute;top:12px;right:16px;color:var(--t3);font-size:20px;cursor:pointer;background:none;border:none}
+.modal .close:hover{color:var(--t1)}
+.my{font-size:11px;color:var(--t3);margin-bottom:3px}
+.mt{font-size:18px;font-weight:800;margin-bottom:3px}
+.md{font-size:11px;color:var(--t2);margin-bottom:10px}
+.tags{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap}
+.tg{padding:3px 10px;border-radius:4px;font-size:9px;font-weight:600}
+.st{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:1px;margin:14px 0 6px}
+.essay{background:rgba(0,0,0,.2);border-radius:8px;padding:12px 14px;font-size:12px;line-height:2;border:1px solid var(--border)}
+[data-theme="light"] .essay{background:#f8f8f8}
+.hl{background:#fbbf2433;padding:1px 3px;border-radius:2px;border-bottom:2px solid #fbbf24;cursor:help}
+.scards{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.scd{padding:7px 10px;border-radius:6px;font-size:10px;line-height:1.5;border:1px solid rgba(128,128,128,.15);flex:1;min-width:180px}
+.scd .sl{font-size:8px;font-weight:700;letter-spacing:.5px;margin-bottom:3px;display:block}
+.scd .se{font-weight:500}
+.scd .sc2{color:var(--t3);font-size:9px;margin-top:1px}
+/* Checklist */
+.ck{margin-top:14px;background:rgba(37,99,235,.05);border-radius:8px;padding:14px 16px;border:1px solid #2563eb44}
+.ck-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.ck-t{font-size:12px;font-weight:700;color:#2563eb}
+.ck-badge{font-size:8px;color:var(--t4);background:var(--bg2);padding:3px 8px;border-radius:4px;border:1px solid var(--border)}
+.ck-dim{margin-bottom:10px}
+.ck-dim-t{font-size:9px;font-weight:700;letter-spacing:.5px;margin-bottom:5px}
+.ck-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px}
+.ck-box{width:16px;height:16px;border:1.5px solid var(--t3);border-radius:3px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s;user-select:none;color:transparent}
+.ck-box.checked{border-color:#22c55e;color:#22c55e}
+.ck-foot{display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border);margin-top:8px;flex-wrap:wrap;gap:6px}
+.ck-score{font-size:10px;color:var(--t3)}
+.ck-score b{font-size:15px}
+/* Exercise cards */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.cd{background:var(--bg2);border-radius:10px;padding:14px 16px;border:1px solid var(--border);cursor:pointer;transition:border-color .15s}
+.cd:hover{border-color:var(--t3)}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.cn{font-size:9px;color:var(--t4);font-weight:600}
+.df{font-size:8px;padding:2px 7px;border-radius:4px;font-weight:600}
+.ctt{font-size:14px;font-weight:700;margin-bottom:3px}
+.cds{font-size:10px;color:var(--t2);line-height:1.4;margin-bottom:8px}
+.ctgs{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px}
+.ctg{padding:2px 7px;border-radius:4px;font-size:8px;font-weight:600}
+.genre{display:inline-block;padding:2px 7px;border-radius:4px;font-size:8px;font-weight:600;background:#8b5cf622;color:#a78bfa;border:1px solid #8b5cf633}
+.cf{display:flex;justify-content:space-between;align-items:center;padding-top:6px;border-top:1px solid var(--border);font-size:9px;color:var(--t4);margin-top:6px}
+.cf .vw{color:#60a5fa;font-weight:600}
+/* Sentence library */
+.sl-pills{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.sl-pill{padding:5px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
+.sl-pill.a{outline:2px solid;outline-offset:1px}
+.sl-sec{background:var(--bg2);border-radius:10px;padding:14px 16px;border:1px solid var(--border);margin-bottom:10px}
+.sl-sec.hide{display:none}
+.sl-sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sl-sn{font-size:13px;font-weight:700}
+.sl-sc{font-size:9px;color:var(--t4)}
+.sl-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-top:1px solid rgba(128,128,128,.1)}
+.sl-row:first-of-type{border-top:none}
+.sl-en{font-size:11px;font-weight:500}
+.sl-cn{font-size:9px;color:var(--t3);margin-top:1px}
+.sl-src{font-size:8px;color:var(--t4);white-space:nowrap;min-width:90px;text-align:right}
+/* Writing workbench */
+.wb{margin-top:16px;border:1px solid #059669;border-radius:10px;overflow:hidden}
+.wb-head{background:#05966922;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.wb-title{font-size:12px;font-weight:700;color:#059669}
+.wb-timer{font-size:20px;font-weight:800;color:#059669;font-variant-numeric:tabular-nums}
+.wb-timer.warn{color:#ef4444}
+.wb-body{padding:16px}
+.wb-step{font-size:10px;color:var(--t3);margin-bottom:6px;font-weight:600}
+.wb-outline{background:rgba(0,0,0,.15);border-radius:6px;padding:10px 12px;margin-bottom:12px;font-size:11px;line-height:1.8;color:var(--t2)}
+[data-theme="light"] .wb-outline{background:#f0f7f0}
+.wb-outline b{color:var(--t1)}
+.wb-textarea{width:100%;min-height:160px;background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:13px;line-height:1.9;color:var(--t1);resize:vertical;font-family:inherit}
+[data-theme="light"] .wb-textarea{background:#fff}
+.wb-textarea:focus{outline:none;border-color:#059669}
+.wb-textarea:disabled{opacity:.5}
+.wb-bar{display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:8px}
+.wc{font-size:13px;font-weight:700;transition:color .2s}
+.wb-btn{padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;border:none;cursor:pointer;transition:all .15s}
+.wb-btn:hover{opacity:.9}
+.wb-btn:disabled{opacity:.4;cursor:not-allowed}
+.wb-btn-primary{background:#059669;color:#fff}
+.wb-btn-ai{background:#8b5cf6;color:#fff}
+.wb-btn-outline{background:transparent;color:var(--t2);border:1px solid var(--border)}
+.wb-locked{text-align:center;padding:20px;color:var(--t3);font-size:11px;border:1px dashed var(--border);border-radius:8px;margin-top:10px}
+/* AI Feedback */
+.ai-fb{margin-top:14px;border:1px solid #8b5cf6;border-radius:10px;overflow:hidden}
+.ai-fb-head{background:#8b5cf622;padding:10px 16px;display:flex;justify-content:space-between;align-items:center}
+.ai-fb-title{font-size:12px;font-weight:700;color:#8b5cf6}
+.ai-fb-body{padding:16px;font-size:12px;line-height:1.9;color:var(--t2)}
+.ai-fb-body b{color:var(--t1)}
+.ai-loading{text-align:center;padding:24px;color:#8b5cf6;font-size:12px}
+.ai-loading .spinner{display:inline-block;width:20px;height:20px;border:2px solid #8b5cf644;border-top-color:#8b5cf6;border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.footer{font-size:9px;color:var(--t4);text-align:center;margin-top:22px;padding-bottom:12px}
+.tip-box{background:rgba(251,191,36,.08);border-radius:6px;padding:8px 12px;border:1px solid rgba(251,191,36,.2);margin-bottom:8px}
+.tip-box .tip-t{font-size:9px;font-weight:700;color:#fbbf24;margin-bottom:2px}
+.tip-box .tip-b{font-size:10px;color:var(--t2);line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="header-row">
+<div><h1>考纲-真题写作主题覆盖分析与靶向训练系统</h1><span class="sub">江苏中职职教高考英语 · 循证教学 · AI赋能</span></div>
+<button class="mode-btn" id="themeBtn" onclick="toggleTheme()">☀️ 课堂模式</button>
+</div>
+<p class="desc">基于2025版新考纲19个主题，映射近十年作文真题覆盖情况。<span class="ldot" style="background:#2563eb"></span>深色=强关联　<span class="ldot" style="background:#2563eb55"></span>浅色=弱关联　<span class="ldot" style="background:#3f3f46"></span>空白=未覆盖</p>
+<div class="evi-bar"><span>📊 <b>证据来源</b>：2025版考试大纲 × 2016—2025年真题</span><span>📐 <b>分析方法</b>：主题-年份交叉覆盖率矩阵</span><span>🎯 <b>研究范式</b>：循证教学 · 精准备考</span></div>
+<div class="tabs" id="tabBar"><div class="tab a" data-tab="0">对照矩阵</div><div class="tab" data-tab="1">盲区预测练习 <span class="badge">12</span></div><div class="tab" data-tab="2">句型库</div></div>
+<div class="tab-content show" id="tc0"><div class="toolbar" id="modFilter"></div><div class="stats" id="statsBar"></div><div class="mw"><table id="matrix"></table></div><div class="blind" id="blindBox"></div><div class="diag" id="diagBox"></div></div>
+<div class="tab-content" id="tc1"><div class="toolbar" id="exFilter"></div><div class="cg" id="exGrid"></div></div>
+<div class="tab-content" id="tc2"><div class="sl-pills" id="slPills"></div><div id="slBody"></div></div>
+<div class="footer">考纲-真题写作主题覆盖分析与靶向训练系统 v4 · AI赋能循证教学</div>
+</div>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+
+<script>
+/* ===== DATA ===== */
+const MODULES=[{name:"基础模块",color:"#2563eb",themes:[{id:"B1",label:"自我与他人"},{id:"B2",label:"学习与生活"},{id:"B3",label:"社会交往"},{id:"B4",label:"社会服务"},{id:"B5",label:"历史与文化"},{id:"B6",label:"科学与技术"},{id:"B7",label:"自然与环境"},{id:"B8",label:"可持续发展"}]},{name:"职业模块",color:"#d97706",themes:[{id:"V1",label:"求职应聘"},{id:"V2",label:"职场礼仪"},{id:"V3",label:"职场服务"},{id:"V4",label:"设备操作"},{id:"V5",label:"技术应用"},{id:"V6",label:"职场安全"},{id:"V7",label:"危机应对"},{id:"V8",label:"职业规则"}]},{name:"拓展模块",color:"#059669",themes:[{id:"E1",label:"自我发展"},{id:"E2",label:"技术创新"},{id:"E3",label:"环境保护"}]}];
+const YEARS=[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+const TOPICS={
+2016:{title:"My Views on Reading",desc:"读书的重要性、喜欢读什么书、建议多读书",essay:"Nowadays, <hl t='开头句型'>more and more people realize that reading is very important</hl>. I love reading too.\n\n<hl t='连接句型'>First of all,</hl> reading can open our eyes and help us learn about the world. <hl t='连接句型'>What's more,</hl> it can improve our writing skills and make us think more clearly. <hl t='观点句型'>In my opinion, everyone should read at least one book a month.</hl>\n\n<hl t='总结句型'>In a word, reading is a good habit that can benefit us a lot.</hl> Let's pick up a book and start reading today!",words:86},
+2017:{title:"My Views on Mobile Phones at School",desc:"学生带手机进校园的利弊与建议",essay:"<hl t='开头句型'>With the development of technology, more and more students bring mobile phones to school.</hl> Some people think it is a good thing, but I don't fully agree.\n\n<hl t='连接句型'>On one hand,</hl> mobile phones can help students search for information. <hl t='连接句型'>On the other hand,</hl> many students play games or chat online in class. <hl t='观点句型'>I believe students should not use phones during class time.</hl>\n\n<hl t='总结句型'>All in all, we should use mobile phones wisely and not let them affect our learning.</hl>",words:82},
+2018:{title:"How to Communicate with Parents",desc:"与父母沟通的重要性、问题与方法",essay:"<hl t='开头句型'>As we all know, communication plays an important role in family life.</hl> However, many students find it hard to talk with their parents.\n\n<hl t='连接句型'>First of all,</hl> we should respect our parents and listen to them carefully. <hl t='连接句型'>In addition,</hl> we can share our feelings and ideas with them after dinner. <hl t='高级句型'>If we have different opinions, we should stay calm and try to understand each other.</hl>\n\n<hl t='总结句型'>In short, good communication can help build a happy family.</hl>",words:88},
+2019:{title:"My Dream Job",desc:"理想职业、选择原因、实现计划",essay:"<hl t='开头句型'>Everyone has a dream job.</hl> My dream is to become a tour guide in the future.\n\n<hl t='连接句型'>First of all,</hl> I love traveling and meeting new people. <hl t='连接句型'>What's more,</hl> being a tour guide allows me to share the beauty of Chinese culture with visitors. <hl t='观点句型'>I believe this job is meaningful because it can help people understand China better.</hl>\n\nTo achieve my dream, <hl t='高级句型'>I am going to study English hard and learn more about Chinese history.</hl> <hl t='总结句型'>I'm sure my dream will come true if I keep trying.</hl>",words:94},
+2020:{title:"My Views on Recycling",desc:"垃圾分类回收现状、好处、中学生行动",essay:"<hl t='开头句型'>Nowadays, more and more people begin to pay attention to recycling.</hl> I think recycling is very important for our environment.\n\n<hl t='连接句型'>First of all,</hl> recycling can reduce waste and save natural resources. <hl t='连接句型'>In addition,</hl> it helps keep our city clean and beautiful. <hl t='观点句型'>In my opinion, every student should take part in recycling activities.</hl>\n\nWe can start from small things, such as sorting garbage and reusing paper. <hl t='总结句型'>In a word, if everyone does a little, we can make a big difference.</hl>",words:90},
+2021:{title:"Online Learning",desc:"网课优缺点与态度建议",essay:"<hl t='开头句型'>With the development of the Internet, online learning has become a new way of studying.</hl>\n\n<hl t='连接句型'>On one hand,</hl> online learning is convenient — we can study at home and watch videos again and again. <hl t='连接句型'>On the other hand,</hl> some students find it hard to concentrate without a teacher around. <hl t='高级句型'>Besides, staring at the screen for too long is bad for our eyes.</hl>\n\n<hl t='观点句型'>I think online learning is useful, but it cannot replace classroom teaching.</hl> <hl t='总结句型'>All in all, we should combine online and offline learning to get the best result.</hl>",words:95},
+2022:{title:"How to Keep Healthy",desc:"如何保持健康（饮食、运动、作息）",essay:"<hl t='开头句型'>As we all know, health is the most important thing in our life.</hl> But how can we keep healthy?\n\n<hl t='连接句型'>First of all,</hl> we should have a balanced diet — eat more vegetables and less junk food. <hl t='连接句型'>What's more,</hl> we need to exercise regularly, such as running or playing basketball. <hl t='高级句型'>It is also important to get enough sleep and stay in a good mood.</hl>\n\n<hl t='总结句型'>In short, if we develop good habits, we will enjoy a healthy and happy life.</hl>",words:85},
+2023:{title:"Buying & Selling Second-hand Items Online",desc:"网上二手交易的经历与看法",essay:"<hl t='开头句型'>Nowadays, buying and selling second-hand items online has become very popular.</hl>\n\nLast month, I sold some old books on a second-hand platform. <hl t='连接句型'>Not only</hl> did I make some money, <hl t='连接句型'>but I also</hl> helped others get cheap books. <hl t='观点句型'>I think this is a good way to recycle things and save money.</hl>\n\n<hl t='高级句型'>However, we should be careful about the quality of the items.</hl> <hl t='总结句型'>In a word, second-hand trading online is helpful if we use it wisely.</hl>",words:84},
+2024:{title:"My Views on the Craze for Hanfu",desc:"汉服热的现象与看法",essay:"<hl t='开头句型'>It is widely believed that Hanfu has become more and more popular among young people.</hl>\n\n<hl t='连接句型'>First of all,</hl> wearing Hanfu is a good way to show our love for traditional Chinese culture. <hl t='连接句型'>In addition,</hl> many Hanfu designs are very beautiful and creative. <hl t='观点句型'>I think the craze for Hanfu helps people learn more about Chinese history.</hl>\n\n<hl t='高级句型'>Of course, we should respect the culture behind it, not just follow the fashion.</hl> <hl t='总结句型'>All in all, I support the Hanfu trend because it makes our culture shine.</hl>",words:94},
+2025:{title:"My Views on Growing Plants in the Classroom",desc:"教室养绿植的利弊与看法",essay:"<hl t='开头句型'>Nowadays, more and more students choose to grow plants in the classroom.</hl> I think it is a good idea.\n\n<hl t='连接句型'>First of all,</hl> green plants can make the classroom more beautiful. <hl t='高级句型'>What's more, studies show that plants can help clean the air,</hl> which is good for our health. Also, taking care of plants can teach us to be patient and responsible.\n\n<hl t='观点句型'>However, some students may spend too much time on plants</hl> and forget to study. <hl t='总结句型'>In a word, if we plan our time well, growing plants in the classroom is a wonderful thing.</hl>",words:92}
+};
+const MATRIX={2016:{B1:1,B2:2},2017:{B2:2,B6:1},2018:{B1:2,B3:2},2019:{B1:1,V1:1,E1:2},2020:{B7:2,B8:2,E3:2},2021:{B2:2,B6:2},2022:{B1:2,B2:1},2023:{B3:1,B8:1,B6:1},2024:{B5:2,B3:1},2025:{B7:2,B2:1}};
+
+const EXERCISES=[
+{id:1,mod:"职业",title:"A Cover Letter for a Hotel Receptionist",desc:"写一封求职信，应聘酒店前台接待员岗位，介绍自身优势与求职意愿。",themes:["V1","V2"],genre:"求职信",diff:"基础",tip:"注意求职信格式：称呼+正文（自我介绍→岗位匹配→求职意愿）+落款。",outline:"Para 1: 说明写信目的（I am writing to apply for...）\nPara 2: 介绍自身优势（至少2点：技能+性格）\nPara 3: 表达期待（面试机会+感谢）\n格式: Dear... / Yours sincerely, + 署名",essay:"Dear Sir or Madam,\n\n<hl t='开头句型'>I am writing to apply for the position of</hl> hotel receptionist in your hotel. I am a student at Wuxi Vocational School and will graduate this June.\n\n<hl t='连接句型'>I am good at communicating with people</hl> and I can speak both Chinese and English. <hl t='连接句型'>In addition,</hl> I am friendly, patient and always ready to help others. <hl t='观点句型'>I believe I am the right person for this job because</hl> I love working with people.\n\n<hl t='总结句型'>I would be grateful if you could give me an opportunity</hl> for an interview. Thank you for your time.\n\nYours sincerely,\nLi Hua",words:88,sents:[{type:"开头",en:"I am writing to apply for the position of ...",cn:"我写信是为了申请……职位"},{type:"连接",en:"In addition, I am good at ... and have experience in ...",cn:"此外，我擅长……并在……方面有经验"},{type:"观点",en:"I believe I am the right person for this job because ...",cn:"我相信我是这份工作的合适人选，因为……"},{type:"总结",en:"I would be grateful if you could give me an opportunity for an interview.",cn:"如果您能给我一次面试机会，我将不胜感激。"}]},
+{id:2,mod:"职业",title:"A Thank-you Email After a Job Interview",desc:"面试结束后写一封感谢邮件，表达感谢并重申求职意愿。",themes:["V2"],genre:"应用文·邮件",diff:"基础",tip:"感谢邮件三段式：Thank→Remind→Hope。",outline:"Para 1: Thank — 感谢面试机会\nPara 2: Remind — 重申自身优势（至少2点）\nPara 3: Hope — 期待回复\n格式: Dear Mr./Ms. ... / Yours sincerely,",essay:"Dear Mr. Wang,\n\n<hl t='开头句型'>Thank you so much for taking the time to interview me today</hl> for the customer service position. I really enjoyed learning more about your company.\n\n<hl t='连接句型'>I would like to remind you that</hl> I am good at communicating with people and I have some experience in online customer service. <hl t='观点句型'>I believe my skills would be a good fit for your team.</hl>\n\n<hl t='总结句型'>I look forward to hearing from you soon.</hl> Thank you again for this opportunity.\n\nYours sincerely,\nLi Hua",words:82,sents:[{type:"开头",en:"Thank you so much for taking the time to ...",cn:"非常感谢您抽出时间……"},{type:"连接",en:"I would like to remind you that ...",cn:"我想提醒您……"},{type:"观点",en:"I believe my skills would be a good fit for ...",cn:"我相信我的技能很适合……"},{type:"总结",en:"I look forward to hearing from you soon.",cn:"期待您的回复。"}]},
+{id:3,mod:"职业",title:"Replying to a Customer Complaint",desc:"以客服身份回复客户投诉邮件，表达歉意并提出解决方案。",themes:["V3","V7"],genre:"应用文·邮件",diff:"中等",tip:"投诉回复：道歉→说明原因→解决方案→感谢理解。",outline:"Para 1: 感谢反馈 + 道歉\nPara 2: 说明原因 + 解决方案\nPara 3: 表达歉意 + 感谢理解\n格式: Dear Customer / Best regards,",essay:"Dear Customer,\n\n<hl t='开头句型'>Thank you for letting us know about the problem</hl> with your order. <hl t='观点句型'>We are very sorry for the trouble this has caused you.</hl>\n\nAfter checking, we found that the product was damaged during delivery. <hl t='连接句型'>To solve this problem,</hl> we will send you a new one within three days. <hl t='连接句型'>In addition,</hl> we will give you a 10% discount on your next order.\n\n<hl t='总结句型'>We hope you can accept our apology and continue to support us.</hl> Thank you for your understanding.\n\nBest regards,\nCustomer Service Team",words:90,sents:[{type:"开头",en:"Thank you for letting us know about the problem with ...",cn:"感谢您告知我们关于……的问题"},{type:"观点",en:"We are very sorry for the trouble this has caused you.",cn:"对给您带来的不便我们深表歉意。"},{type:"连接",en:"To solve this problem, we will ...",cn:"为了解决这个问题，我们将……"},{type:"总结",en:"We hope you can accept our apology.",cn:"希望您能接受我们的道歉。"}]},
+{id:4,mod:"职业",title:"A Safety Training Notice",desc:"以企业安全部门名义发布安全培训通知。",themes:["V6"],genre:"通知",diff:"中等",tip:"通知格式：标题NOTICE→正文→落款。",outline:"标题: NOTICE（居中）\nPara 1: 目的（为了提高……）\nPara 2: 时间/地点/内容\nPara 3: 注意事项\n落款: 部门 + 日期",essay:"NOTICE\n\n<hl t='开头句型'>In order to improve workplace safety awareness,</hl> our company will hold a safety training session for all staff.\n\n<hl t='句型'>Time:</hl> Friday, May 10th, 2:00-4:00 PM\n<hl t='句型'>Place:</hl> Meeting Room 301\n<hl t='句型'>Content:</hl> Fire safety, first aid skills, and emergency evacuation\n\n<hl t='连接句型'>Please note that</hl> all staff must attend on time. <hl t='总结句型'>If you have any questions, please contact the Safety Department.</hl>\n\nSafety Department\nMay 6th, 2025",words:80,sents:[{type:"开头",en:"In order to improve ..., our company will hold ...",cn:"为了提高……，我公司将举办……"},{type:"句型",en:"Time: ... / Place: ... / Content: ...",cn:"时间/地点/内容"},{type:"连接",en:"Please note that all staff must ...",cn:"请注意，所有员工必须……"},{type:"总结",en:"If you have any questions, please contact ...",cn:"如有疑问，请联系……"}]},
+{id:5,mod:"职业",title:"Equipment Operation Instructions",desc:"写一篇设备操作说明文。",themes:["V4","V5"],genre:"说明文",diff:"进阶",tip:"说明文用祈使句，步骤清晰。",outline:"Para 1: 介绍设备名称和用途\nPara 2: 操作步骤（First→Then→Finally）\nPara 3: 注意事项",essay:"<hl t='开头句型'>The following is a guide on how to use the photocopier in our office.</hl>\n\n<hl t='连接句型'>First,</hl> turn on the machine and wait for it to warm up. <hl t='连接句型'>Then,</hl> open the cover and place your document face down on the glass. Choose the number of copies and press the Start button. <hl t='连接句型'>Finally,</hl> take out your copies and turn off the machine.\n\n<hl t='高级句型'>Please note that you should not touch the glass with wet hands.</hl> <hl t='总结句型'>If the machine does not work properly, please report it to the office manager.</hl>",words:92,sents:[{type:"开头",en:"The following is a guide on how to use ...",cn:"以下是关于如何使用……的指南"},{type:"连接",en:"First, ... Then, ... Finally, ...",cn:"首先……然后……最后……"},{type:"高级",en:"Please note that you should not ...",cn:"请注意不应该……"},{type:"总结",en:"If ... does not work properly, please report it to ...",cn:"如无法正常工作，请向……报告"}]},
+{id:6,mod:"职业",title:"A Workplace Self-Introduction",desc:"新员工入职第一天做英文自我介绍。",themes:["V2","V8"],genre:"议论文",diff:"基础",tip:"自我介绍：基本信息→教育背景→性格特点→工作态度。",outline:"Para 1: 问候 + 基本信息\nPara 2: 教育背景 + 性格优势\nPara 3: 表达期待",essay:"Good morning, everyone!\n\n<hl t='开头句型'>I'm very glad to have the chance to introduce myself.</hl> My name is Li Hua, and I just graduated from Wuxi Vocational School.\n\n<hl t='连接句型'>During my school years,</hl> I studied e-commerce and did well in my courses. <hl t='观点句型'>I am a hard-working and friendly person.</hl> <hl t='连接句型'>In addition,</hl> I am good at teamwork and always willing to learn new things.\n\n<hl t='总结句型'>I look forward to working with all of you</hl> and I will try my best to do a good job. Thank you!",words:90,sents:[{type:"开头",en:"I'm very glad to have the chance to ...",cn:"我很高兴有机会……"},{type:"连接",en:"During my school years, I studied ...",cn:"在校期间，我学习了……"},{type:"观点",en:"I am a hard-working and friendly person.",cn:"我是一个勤奋友善的人。"},{type:"总结",en:"I look forward to working with all of you.",cn:"期待与大家共事。"}]},
+{id:7,mod:"职业",title:"A Report on Product Quality",desc:"写一篇产品质量检查报告。",themes:["V3","V8"],genre:"说明文",diff:"进阶",tip:"报告结构：背景→结果→分析→建议。",outline:"Para 1: 报告背景\nPara 2: 检查结果 + 问题\nPara 3: 原因分析 + 改进建议",essay:"<hl t='开头句型'>This report is about the quality check of Product A in our factory.</hl>\n\nLast week, we checked 500 pieces of Product A. <hl t='连接句型'>The results show that</hl> 480 pieces passed the test, but 20 pieces had small problems.\n\n<hl t='高级句型'>After careful analysis, we found that the problem was caused by old equipment.</hl> <hl t='观点句型'>We suggest replacing the equipment as soon as possible.</hl>\n\n<hl t='总结句型'>In conclusion, the overall quality is good, but we need to improve our equipment.</hl>",words:82,sents:[{type:"开头",en:"This report is about ...",cn:"本报告是关于……"},{type:"连接",en:"The results show that ...",cn:"结果表明……"},{type:"高级",en:"After careful analysis, we found that ...",cn:"经仔细分析，我们发现……"},{type:"总结",en:"In conclusion, ... but we need to improve ...",cn:"总之……但需改进……"}]},
+{id:8,mod:"拓展",title:"My Views on AI and Technology Innovation",desc:"谈谈对AI和科技创新的看法。",themes:["E2"],genre:"议论文",diff:"中等",tip:"科技话题要平衡利弊。",outline:"Para 1: 引出话题（科技发展）\nPara 2: 正反两面论述\nPara 3: 个人观点 + 总结",essay:"<hl t='开头句型'>With the rapid development of AI, technology innovation is changing our life in many ways.</hl>\n\n<hl t='连接句型'>On one hand,</hl> AI can help us study more efficiently. <hl t='连接句型'>On the other hand,</hl> some people worry that AI may replace human workers in the future.\n\n<hl t='观点句型'>In my opinion, we should learn to use AI wisely</hl> and keep developing our own skills. <hl t='总结句型'>All in all, technology is a tool — it depends on how we use it.</hl>",words:80,sents:[{type:"开头",en:"With the rapid development of ..., ... is changing our life.",cn:"随着……的迅速发展，……正在改变生活。"},{type:"连接",en:"On one hand, ... On the other hand, ...",cn:"一方面……另一方面……"},{type:"观点",en:"In my opinion, we should learn to ... wisely.",cn:"我们应该学会明智地……"},{type:"总结",en:"All in all, ... is a tool — it depends on how we use it.",cn:"总之……取决于我们如何使用。"}]},
+{id:9,mod:"拓展",title:"How to Save Energy in Daily Life",desc:"谈谈节能环保的重要性和做法。",themes:["E3"],genre:"议论文",diff:"基础",tip:"从身边小事出发。",outline:"Para 1: 引出话题（节能重要性）\nPara 2: 具体做法（至少3点）\nPara 3: 总结号召",essay:"<hl t='开头句型'>As we all know, saving energy is very important for our planet.</hl>\n\n<hl t='连接句型'>First of all,</hl> we should turn off the lights when we leave a room. <hl t='连接句型'>What's more,</hl> we can ride bikes or take buses instead of driving. <hl t='高级句型'>It is also a good idea to use less plastic and bring our own bags.</hl>\n\n<hl t='总结句型'>In a word, if each of us saves a little energy every day, we can make a big difference.</hl>",words:82,sents:[{type:"开头",en:"As we all know, ... is very important for ...",cn:"众所周知，……对……非常重要"},{type:"连接",en:"First of all, ... What's more, ...",cn:"首先……此外……"},{type:"高级",en:"It is also a good idea to ...",cn:"……也是好主意"},{type:"总结",en:"In a word, if each of us ..., we can make a big difference.",cn:"总之，如果每人……就能带来改变。"}]},
+{id:10,mod:"交叉",title:"My Views on Vocational Education",desc:"谈谈对职业教育的看法。",themes:["B2","V8","E1"],genre:"议论文",diff:"中等",tip:"体现职教学生视角。",outline:"Para 1: 引出话题\nPara 2: 职业教育的优势\nPara 3: 个人观点 + 总结",essay:"<hl t='开头句型'>Nowadays, more and more students choose vocational education.</hl> As a vocational school student, I have my own views.\n\n<hl t='连接句型'>First of all,</hl> vocational education focuses on practical skills, which helps us find jobs more easily. <hl t='连接句型'>In addition,</hl> we can learn real-world knowledge through internships.\n\n<hl t='观点句型'>I believe vocational education is just as important as regular education</hl> because society needs skilled workers. <hl t='总结句型'>In short, we should be proud of our choice and work hard for our future.</hl>",words:84,sents:[{type:"开头",en:"Nowadays, more and more students choose ...",cn:"越来越多学生选择……"},{type:"连接",en:"First of all, ... In addition, ...",cn:"首先……此外……"},{type:"观点",en:"I believe ... is just as important as ...",cn:"我认为……和……一样重要"},{type:"总结",en:"In short, we should be proud of ... and work hard.",cn:"我们应该为……自豪并努力。"}]},
+{id:11,mod:"交叉",title:"How to Be a Good Team Member at Work",desc:"谈谈如何做好团队成员。",themes:["B3","V2","V8"],genre:"议论文",diff:"中等",tip:"突出沟通、合作、责任。",outline:"Para 1: 引出话题（团队合作重要性）\nPara 2: 具体做法（沟通/尊重/责任）\nPara 3: 总结",essay:"<hl t='开头句型'>Teamwork is very important in the workplace.</hl> But how can we be a good team member?\n\n<hl t='连接句型'>First of all,</hl> we should communicate with teammates openly. <hl t='连接句型'>What's more,</hl> we need to respect different opinions. <hl t='高级句型'>Most importantly, we should take responsibility for our own tasks.</hl>\n\n<hl t='观点句型'>I think being a good team member is not only about skills, but also about attitude.</hl> <hl t='总结句型'>In a word, if we work together with trust and respect, we can achieve great things.</hl>",words:88,sents:[{type:"开头",en:"... is very important in the workplace.",cn:"……在职场中非常重要。"},{type:"高级",en:"Most importantly, we should take responsibility for ...",cn:"最重要的是为……承担责任"},{type:"观点",en:"I think ... is not only about ..., but also about ...",cn:"不仅关乎……更关乎……"},{type:"总结",en:"If we work together with trust and respect, we can achieve great things.",cn:"带着信任和尊重合作就能成功。"}]},
+{id:12,mod:"交叉",title:"A Letter to a Foreign Friend About Chinese Festivals",desc:"给外国朋友写信介绍一个中国传统节日。",themes:["B5","B3"],genre:"应用文·邮件",diff:"基础",tip:"书信格式+文化介绍。",outline:"Para 1: 问候 + 引出话题\nPara 2: 介绍节日（时间/活动/意义）\nPara 3: 邀请/祝愿\n格式: Dear Tom / Best wishes,",essay:"Dear Tom,\n\n<hl t='开头句型'>I'm so happy to hear from you!</hl> Let me tell you about the Mid-Autumn Festival.\n\n<hl t='连接句型'>First of all,</hl> this festival falls on the 15th day of the eighth lunar month. On that day, families get together and enjoy mooncakes. <hl t='高级句型'>The full moon is a symbol of reunion, which makes this festival very meaningful.</hl>\n\n<hl t='总结句型'>I hope you can come to China and celebrate it with us one day!</hl>\n\nBest wishes,\nLi Hua",words:84,sents:[{type:"开头",en:"I'm so happy to hear from you!",cn:"很高兴收到来信！"},{type:"连接",en:"First of all, this ... falls on ...",cn:"首先，这个……在……"},{type:"高级",en:"... is a symbol of ..., which makes ... very meaningful.",cn:"……是……的象征，非常有意义。"},{type:"总结",en:"I hope you can come to ... and ... one day!",cn:"希望你有一天能来……！"}]}
+];
+
+const SENT_TYPES=[{key:"开头",color:"#2563eb",light:"#2563eb22"},{key:"连接",color:"#059669",light:"#05966922"},{key:"观点",color:"#d97706",light:"#d9770622"},{key:"句型",color:"#ec4899",light:"#ec489922"},{key:"高级",color:"#ef4444",light:"#ef444422"},{key:"总结",color:"#8b5cf6",light:"#8b5cf622"}];
+const CHECKLIST=[{dim:"格式规范",dimColor:"#a78bfa",items:["有正确的称呼","有正确的落款","正文分段合理"]},{dim:"内容完整",dimColor:"#fbbf24",items:["开头点明写作目的","中间要点完整（≥2点）","结尾有总结/期待"]},{dim:"语言质量",dimColor:"#34d399",items:["使用≥1个开头句型","使用≥1个连接句型","使用≥1个总结/高级句型","无明显拼写语法错误"]},{dim:"基本要求",dimColor:"#f87171",items:["词数80—100词","大小写正确"]}];
+
+const allThemes=MODULES.flatMap(m=>m.themes);
+const coverCount={};allThemes.forEach(t=>{coverCount[t.id]=YEARS.filter(y=>MATRIX[y]?.[t.id]).length});
+const uncovered=allThemes.filter(t=>coverCount[t.id]===0);
+const totalCells=allThemes.length*YEARS.length;
+const filledCells=YEARS.reduce((s,y)=>s+Object.keys(MATRIX[y]||{}).length,0);
+const coverageRate=(filledCells/totalCells*100).toFixed(1);
+function getModFor(id){return MODULES.find(m=>m.themes.some(t=>t.id===id))}
+function getThemeLabel(id){const t=allThemes.find(x=>x.id===id);return t?t.label:id}
+function getSentColor(type){return SENT_TYPES.find(s=>s.key===type)||SENT_TYPES[0]}
+function parseEssayHTML(raw){return raw.replace(/<hl t='([^']+)'>/g,'<span class="hl" title="$1">').replace(/<\/hl>/g,'</span>').replace(/\n/g,'<br>')}
+function countWords(text){return text.trim().split(/\s+/).filter(w=>w.length>0).length}
+
+/* ===== THEME TOGGLE ===== */
+let isLight=false;
+window.toggleTheme=function(){
+isLight=!isLight;
+document.documentElement.setAttribute('data-theme',isLight?'light':'');
+document.getElementById('themeBtn').textContent=isLight?'🌙 深色模式':'☀️ 课堂模式';
+}
+
+/* ===== TAB SWITCH ===== */
+document.getElementById('tabBar').addEventListener('click',e=>{
+const tab=e.target.closest('.tab');if(!tab)return;
+const idx=tab.dataset.tab;
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('a'));tab.classList.add('a');
+document.querySelectorAll('.tab-content').forEach(tc=>tc.classList.remove('show'));
+document.getElementById('tc'+idx).classList.add('show');
+});
+
+/* ===== TAB 0: MATRIX ===== */
+document.getElementById('statsBar').innerHTML=[
+{l:"考纲主题",v:"19个",s:"3大模块",c:"var(--t1)"},{l:"十年覆盖率",v:coverageRate+"%",s:filledCells+"/"+totalCells+"格",c:"#ef4444"},
+{l:"零覆盖主题",v:uncovered.length+"个",s:"命题盲区",c:"#f59e0b"},{l:"体裁",v:"100%议论文",s:"无应用文",c:"#8b5cf6"}
+].map(s=>`<div class="sc"><div class="l">${s.l}</div><div class="v" style="color:${s.c}">${s.v}</div><div class="s">${s.s}</div></div>`).join('');
+
+let activeFilter='all';
+document.getElementById('modFilter').innerHTML='<span class="tb a" data-f="all">全部</span>'+MODULES.map(m=>`<span class="tb" data-f="${m.name}">${m.name}</span>`).join('');
+document.getElementById('modFilter').addEventListener('click',e=>{
+const btn=e.target.closest('.tb');if(!btn)return;activeFilter=btn.dataset.f;
+document.querySelectorAll('#modFilter .tb').forEach(b=>b.classList.toggle('a',b.dataset.f===activeFilter));
+document.querySelectorAll('.dr').forEach(row=>{row.classList.toggle('dim',activeFilter!=='all'&&row.dataset.mod!==activeFilter)});
+});
+
+let html='<thead><tr><th class="co">模块 / 主题</th>';
+YEARS.forEach(y=>{html+=`<th class="yc" data-y="${y}"><div style="font-size:12px;font-weight:700">${y}</div></th>`});
+html+='<th class="cc">覆盖<br>次数</th></tr></thead><tbody>';
+MODULES.forEach(mod=>{
+html+=`<tr class="mr"><td colspan="${YEARS.length+2}" style="color:${mod.color};background:${mod.color}11">${mod.name}</td></tr>`;
+mod.themes.forEach(theme=>{
+const c=coverCount[theme.id],isZ=c===0,cc=isZ?'#ef4444':c>=3?'#22c55e':'#fbbf24';
+html+=`<tr class="dr" data-mod="${mod.name}"><td class="tn${isZ?' z':''}">${isZ?'⚠ ':''}${theme.label}</td>`;
+YEARS.forEach(y=>{const val=MATRIX[y]?.[theme.id]||0;let bg='transparent';if(val===2)bg=mod.color;else if(val===1)bg=mod.color+'55';
+html+=`<td class="cl" data-y="${y}"><div class="dt ${val?'f':'e'}" style="background:${bg}"${val?` onclick="showYearModal(${y})"`:''} ${val?`title="${y}年 点击查看详情"`:``}></div></td>`;
+});html+=`<td class="cnt" style="color:${cc}">${c}</td></tr>`;});
+});html+='</tbody>';
+document.getElementById('matrix').innerHTML=html;
+
+document.querySelectorAll('.yc').forEach(th=>{th.addEventListener('click',()=>{const y=+th.dataset.y;showYearModal(y)})});
+
+window.showYearModal=function(y){
+const t=TOPICS[y];if(!t)return;
+const tags=Object.entries(MATRIX[y]||{}).map(([k,v])=>{const m=getModFor(k);return `<span class="tg" style="background:${m.color}22;color:${m.color};border:1px solid ${m.color}44">${getThemeLabel(k)}${v===1?'（弱）':''}</span>`}).join('');
+const essayHTML=parseEssayHTML(t.essay);
+const sentPairs=[];const seen=new Set();const re2=/<hl t='([^']+)'>([^<]+)<\/hl>/g;let m2;
+while((m2=re2.exec(t.essay))!==null){if(!seen.has(m2[1])){seen.add(m2[1]);sentPairs.push({type:m2[1],text:m2[2].trim()})}}
+const sentCards=sentPairs.map(s=>{const sc=getSentColor(s.type);return `<div class="scd" style="background:${sc.light}"><span class="sl" style="color:${sc.color}">${s.type}</span><div class="se">${s.text.substring(0,55)}${s.text.length>55?'...':''}</div></div>`}).join('');
+document.getElementById('modal').innerHTML=`<button class="close" onclick="closeModal()">✕</button>
+<div class="my">${y}年真题</div><div class="mt">${t.title}</div><div class="md">题目要求：${t.desc} · ${t.words}词</div>
+<div class="tags">${tags}</div><div class="st">范文（${t.words}词）<span style="font-size:9px;color:#fbbf24;font-weight:400;margin-left:6px">黄色底纹=亮点句型，悬停查看类型</span></div>
+<div class="essay">${essayHTML}</div><div class="st">亮点句型</div><div class="scards">${sentCards}</div>`;
+document.getElementById('overlay').classList.add('show');
+}
+
+const blindTags=uncovered.map(t=>{const m=getModFor(t.id);return `<span class="btg" style="background:${m.color}22;color:${m.color};border:1px solid ${m.color}44">${t.label}</span>`}).join('');
+document.getElementById('blindBox').innerHTML=`<div class="blind-t">⚠ 命题盲区（十年零覆盖）→ 高概率出题方向</div><div class="blind-tags">${blindTags}</div><div class="blind-note">职业模块8个主题中7个从未出现在作文真题中，建议重点补强。应用文体裁（邮件/书信/通知）需纳入备考。</div>`;
+
+const bR=(YEARS.reduce((s,y)=>s+Object.keys(MATRIX[y]||{}).filter(k=>k[0]==='B').length,0)/(80)*100).toFixed(1);
+const vR=(YEARS.reduce((s,y)=>s+Object.keys(MATRIX[y]||{}).filter(k=>k[0]==='V').length,0)/(80)*100).toFixed(1);
+const eR=(YEARS.reduce((s,y)=>s+Object.keys(MATRIX[y]||{}).filter(k=>k[0]==='E').length,0)/(30)*100).toFixed(1);
+document.getElementById('diagBox').innerHTML=`<div class="diag-t">📋 循证诊断报告</div><div class="diag-body"><b>诊断结论：</b>十年覆盖率${coverageRate}%（${filledCells}/${totalCells}），基础模块${bR}%，职业模块${vR}%，拓展模块${eR}%。零覆盖${uncovered.length}个（${(uncovered.length/19*100).toFixed(1)}%），集中于职业模块。体裁100%议论文。<br><b>教学建议：</b>复习课时40-50%分配给职业模块，增设应用文专项训练。优先级：求职应聘 > 职场礼仪 > 职场服务 > 职场安全。</div>`;
+
+/* ===== TAB 1: EXERCISES ===== */
+const genres=[...new Set(EXERCISES.map(e=>e.genre))];let exFG='全部';
+document.getElementById('exFilter').innerHTML=`<span class="tb a" data-g="全部">全部</span>`+genres.map(g=>`<span class="tb" data-g="${g}">${g}</span>`).join('');
+document.getElementById('exFilter').addEventListener('click',e=>{const btn=e.target.closest('.tb');if(!btn)return;exFG=btn.dataset.g;
+document.querySelectorAll('#exFilter .tb').forEach(b=>b.classList.toggle('a',b.dataset.g===exFG));renderEx()});
+
+function renderEx(){
+const list=exFG==='全部'?EXERCISES:EXERCISES.filter(e=>e.genre===exFG);
+document.getElementById('exGrid').innerHTML=list.map(ex=>{
+const dc=ex.diff==='基础'?'#22c55e':ex.diff==='中等'?'#fbbf24':'#ef4444';
+const tt=ex.themes.map(tid=>{const m=getModFor(tid);return `<span class="ctg" style="background:${m.color}22;color:${m.color};border:1px solid ${m.color}33">${getThemeLabel(tid)}</span>`}).join('');
+return `<div class="cd" onclick="showExModal(${ex.id})"><div class="ch"><span class="cn">#${String(ex.id).padStart(2,'0')} ${ex.mod}模块</span><span class="df" style="background:${dc}22;color:${dc}">${ex.diff}</span></div>
+<div class="ctt">${ex.title}</div><div class="cds">${ex.desc}</div><div class="ctgs">${tt}</div><span class="genre">${ex.genre}</span>
+<div class="cf"><span>含范文+句型+AI批改</span><span class="vw">点击练习 →</span></div></div>`}).join('')}
+renderEx();
+
+/* Timer state */
+let timerInterval=null,timerSec=0;
+function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null}}
+
+window.showExModal=function(id){
+stopTimer();
+const ex=EXERCISES.find(e=>e.id===id);
+const dc=ex.diff==='基础'?'#22c55e':ex.diff==='中等'?'#fbbf24':'#ef4444';
+const tt=ex.themes.map(tid=>{const m=getModFor(tid);return `<span class="tg" style="background:${m.color}22;color:${m.color};border:1px solid ${m.color}44">${getThemeLabel(tid)}</span>`}).join('');
+const sentCards=ex.sents.map(s=>{const sc=getSentColor(s.type);return `<div class="scd" style="background:${sc.light}"><span class="sl" style="color:${sc.color}">${s.type}</span><div class="se">${s.en}</div><div class="sc2">${s.cn}</div></div>`}).join('');
+const ckHTML=CHECKLIST.map(d=>`<div class="ck-dim"><div class="ck-dim-t" style="color:${d.dimColor}">${d.dim}</div>${d.items.map(it=>`<div class="ck-row"><span class="ck-box" onclick="this.classList.toggle('checked');updCk()">✓</span>${it}</div>`).join('')}</div>`).join('');
+
+document.getElementById('modal').innerHTML=`<button class="close" onclick="closeModal()">✕</button>
+<div class="my">盲区预测练习 #${String(ex.id).padStart(2,'0')} · ${ex.mod}模块</div>
+<div class="mt">${ex.title}</div><div class="md">${ex.desc} · 80-100词</div>
+<div class="tags">${tt}<span class="tg" style="background:#8b5cf622;color:#a78bfa;border:1px solid #8b5cf633">${ex.genre}</span><span class="tg" style="background:${dc}22;color:${dc};border:1px solid ${dc}33">${ex.diff}</span></div>
+<div class="tip-box"><div class="tip-t">💡 教学提示</div><div class="tip-b">${ex.tip}</div></div>
+
+<!-- ★ Writing Workbench ★ -->
+<div class="wb" id="wb">
+<div class="wb-head"><div class="wb-title">✍️ 写作工作台</div>
+<div style="display:flex;gap:8px;align-items:center">
+<select id="timerSel" style="background:var(--bg2);color:var(--t2);border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-size:10px"><option value="0">不计时</option><option value="600">10分钟</option><option value="900" selected>15分钟</option><option value="1200">20分钟</option></select>
+<div class="wb-timer" id="timerDisp">15:00</div>
+</div></div>
+<div class="wb-body">
+<div class="wb-step">Step 1: 审题构思 — 参考大纲骨架，明确每段写什么</div>
+<div class="wb-outline">${ex.outline.replace(/\n/g,'<br>')}</div>
+<div class="wb-step">Step 2: 开始写作 — 点击"开始计时"后动笔</div>
+<textarea class="wb-textarea" id="wbText" placeholder="在此输入你的作文..." disabled></textarea>
+<div class="wb-bar">
+<div><span class="wc" id="wcDisp" style="color:var(--t4)">0 词</span><span style="font-size:10px;color:var(--t4);margin-left:8px">（目标：80-100词）</span></div>
+<div style="display:flex;gap:8px">
+<button class="wb-btn wb-btn-primary" id="startBtn" onclick="startWriting(${ex.id})">▶ 开始计时</button>
+<button class="wb-btn wb-btn-primary" id="doneBtn" onclick="finishWriting(${ex.id})" style="display:none">✅ 完成写作</button>
+</div></div></div></div>
+
+<!-- Locked areas -->
+<div id="lockedEssay" class="wb-locked">🔒 完成写作后解锁范文对照</div>
+<div id="revealArea" style="display:none">
+<div class="st">参考范文（${ex.words}词）</div>
+<div class="essay">${parseEssayHTML(ex.essay)}</div>
+<div class="st">亮点句型卡片</div><div class="scards">${sentCards}</div>
+<div class="ck"><div class="ck-h"><div class="ck-t">✅ 写作自评检查表</div><div class="ck-badge">点击勾选</div></div>${ckHTML}
+<div class="ck-foot"><div class="ck-score">达标 <b style="color:#22c55e" id="ckYes">0</b> / 12 项</div><div style="font-size:9px;color:var(--t4)">10-12=A ｜ 7-9=B ｜ 4-6=C</div></div></div>
+<div style="text-align:center;margin-top:12px"><button class="wb-btn wb-btn-ai" id="aiBtn" onclick="getAIFeedback(${ex.id})">🤖 AI助手点评</button></div>
+<div id="aiFeedback"></div>
+</div>`;
+
+document.getElementById('timerSel').addEventListener('change',function(){
+const v=+this.value;timerSec=v;
+document.getElementById('timerDisp').textContent=v?formatTime(v):'--:--';
+});
+timerSec=900;
+document.getElementById('overlay').classList.add('show');
+}
+
+function formatTime(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+
+window.startWriting=function(exId){
+const ta=document.getElementById('wbText');ta.disabled=false;ta.focus();
+document.getElementById('startBtn').style.display='none';
+document.getElementById('doneBtn').style.display='';
+const sel=document.getElementById('timerSel');sel.disabled=true;
+timerSec=+sel.value;
+if(timerSec>0){
+timerInterval=setInterval(()=>{
+timerSec--;
+const disp=document.getElementById('timerDisp');
+if(disp){disp.textContent=formatTime(timerSec);if(timerSec<=60)disp.classList.add('warn')}
+if(timerSec<=0){stopTimer();finishWriting(exId)}
+},1000)}
+ta.addEventListener('input',()=>{
+const wc=countWords(ta.value);
+const el=document.getElementById('wcDisp');
+el.textContent=wc+' 词';
+el.style.color=wc>=80&&wc<=100?'#22c55e':wc>100||wc<60?'#ef4444':'#fbbf24';
+});
+}
+
+window.finishWriting=function(exId){
+stopTimer();
+const ta=document.getElementById('wbText');ta.disabled=true;
+document.getElementById('doneBtn').style.display='none';
+document.getElementById('lockedEssay').style.display='none';
+document.getElementById('revealArea').style.display='block';
+document.getElementById('revealArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+window.updCk=function(){
+const n=document.querySelectorAll('.ck-box.checked').length;
+const el=document.getElementById('ckYes');if(el)el.textContent=n;
+}
+
+/* ===== AI FEEDBACK ===== */
+window.getAIFeedback=async function(exId){
+const ex=EXERCISES.find(e=>e.id===exId);
+const studentText=document.getElementById('wbText')?.value?.trim();
+if(!studentText||studentText.length<10){alert('请先在写作工作台中完成写作（至少写几个句子）');return}
+
+const btn=document.getElementById('aiBtn');
+btn.disabled=true;btn.textContent='🤖 AI分析中...';
+const fbDiv=document.getElementById('aiFeedback');
+fbDiv.innerHTML='<div class="ai-loading"><span class="spinner"></span>AI正在批阅你的作文，请稍候（约10-15秒）...</div>';
+
+const wc=countWords(studentText);
+const refEssay=ex.essay.replace(/<hl t='[^']+'>|<\/hl>/g,'');
+const sentList=ex.sents.map(s=>s.en).join('\n');
+
+const sysPrompt=`你是一位江苏中职职教高考英语写作阅卷专家。请用中文批改学生作文，语气友善鼓励，适合中职学生。输出严格按以下结构，不要用markdown格式：
+
+📊 基础检查
+词数：X词（达标/未达标）
+拼写语法：逐条列出错误→修正（没有就表扬）
+
+📝 内容评价
+格式：是否规范
+要点：覆盖了哪些/遗漏了哪些
+亮点：哪里写得好
+
+💡 句型点评
+已用好句型：列出并鼓励
+建议补充：给1-2个具体句型例句
+
+⭐ 总体评价
+预估分档：A(20-25)/B(15-19)/C(10-14)/D(<10)
+鼓励一句话
+最需改进的1点`;
+
+const userMsg=`【题目】${ex.title}
+【要求】${ex.desc}（${ex.genre}，80-100词）
+【学生作文】（实际${wc}词）
+${studentText}
+【参考范文】
+${refEssay}
+【推荐句型】
+${sentList}`;
+
+try{
+const resp=await fetch("https://api.anthropic.com/v1/messages",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+model:"claude-sonnet-4-20250514",
+max_tokens:1000,
+system:sysPrompt,
+messages:[{role:"user",content:userMsg}]
+})
+});
+
+if(!resp.ok){
+const errData=await resp.text();
+throw new Error('API返回'+resp.status+'：'+errData.substring(0,100));
+}
+
+const data=await resp.json();
+let text='';
+if(data.content&&Array.isArray(data.content)){
+text=data.content.filter(b=>b.type==='text').map(b=>b.text).join('\n');
+}
+if(!text)text='AI返回内容为空，请稍后重试。';
+
+const formatted=text
+.replace(/\n/g,'<br>')
+.replace(/(📊|📝|💡|⭐)/g,'<br><b style="font-size:14px">$1</b>')
+.replace(/^<br>/,'');
+
+fbDiv.innerHTML=`<div class="ai-fb">
+<div class="ai-fb-head"><div class="ai-fb-title">🤖 AI助手点评</div><div style="font-size:9px;color:var(--t4)">由AI生成 · 仅供参考 · 以教师批改为准</div></div>
+<div class="ai-fb-body">${formatted}</div></div>`;
+
+}catch(err){
+console.error('AI Feedback Error:',err);
+fbDiv.innerHTML=`<div class="ai-fb">
+<div class="ai-fb-head"><div class="ai-fb-title">🤖 AI助手点评</div></div>
+<div class="ai-fb-body">
+<div style="color:#ef4444;margin-bottom:10px">⚠ AI服务暂时不可用</div>
+<div style="font-size:11px;color:var(--t3);margin-bottom:12px">错误信息：${err.message}</div>
+<div style="font-size:11px;color:var(--t2)">别担心，你仍然可以：<br>
+1️⃣ 使用上方的<b>自评检查表</b>逐项自查<br>
+2️⃣ 对照<b>参考范文</b>找差距<br>
+3️⃣ 请同桌用蓝色笔帮你<b>互评</b></div>
+</div></div>`;
+}
+btn.disabled=false;btn.textContent='🤖 重新点评';
+}
+
+/* ===== TAB 2: SENTENCE LIBRARY ===== */
+function collectSents(){
+const lib={};SENT_TYPES.forEach(t=>lib[t.key]=[]);
+YEARS.forEach(y=>{const t=TOPICS[y];if(!t)return;const re=/<hl t='([^']+)'>([^<]+)<\/hl>/g;let m;
+while((m=re.exec(t.essay))!==null){lib[m[1]]&&lib[m[1]].push({en:m[2].trim(),src:y+'年真题'})}});
+EXERCISES.forEach(ex=>{ex.sents.forEach(s=>{lib[s.type]&&lib[s.type].push({en:s.en,cn:s.cn,src:'预测#'+String(ex.id).padStart(2,'0')})})});
+Object.keys(lib).forEach(k=>{const seen=new Set();lib[k]=lib[k].filter(i=>{const key=i.en.toLowerCase().substring(0,30);if(seen.has(key))return false;seen.add(key);return true})});
+return lib}
+const sentLib=collectSents();let slF='all';
+document.getElementById('slPills').innerHTML=`<span class="sl-pill a" data-t="all" style="background:var(--border);color:var(--t1)">全部</span>`+SENT_TYPES.map(t=>`<span class="sl-pill" data-t="${t.key}" style="background:${t.light};color:${t.color}">${t.key} ×${sentLib[t.key]?.length||0}</span>`).join('');
+document.getElementById('slPills').addEventListener('click',e=>{const p=e.target.closest('.sl-pill');if(!p)return;slF=p.dataset.t;
+document.querySelectorAll('.sl-pill').forEach(x=>x.classList.toggle('a',x.dataset.t===slF));
+document.querySelectorAll('.sl-sec').forEach(s=>{s.classList.toggle('hide',slF!=='all'&&s.dataset.type!==slF)})});
+document.getElementById('slBody').innerHTML=SENT_TYPES.map(t=>{const items=sentLib[t.key]||[];if(!items.length)return '';
+return `<div class="sl-sec" data-type="${t.key}"><div class="sl-sh"><span class="sl-sn" style="color:${t.color}">${t.key}句型</span><span class="sl-sc">共${items.length}条</span></div>
+${items.map(i=>`<div class="sl-row"><div style="flex:1"><div class="sl-en">${i.en}</div>${i.cn?`<div class="sl-cn">${i.cn}</div>`:''}</div><div class="sl-src">${i.src}</div></div>`).join('')}</div>`}).join('');
+
+/* ===== MODAL CLOSE ===== */
+window.closeModal=function(){stopTimer();document.getElementById('overlay').classList.remove('show')}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+</script>
+</body>
+</html>
